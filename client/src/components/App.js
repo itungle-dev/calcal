@@ -1,29 +1,31 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
+import { connect } from "react-redux";
+import * as actions from "../actions";
 
-const inlineStyle = {
-	display: "inline-block"
-};
+import Header from "./Header";
 
-const Header = () => <h2>Header</h2>;
-const Dashboard = () => <h2 style={inlineStyle}>Dashboard</h2>;
-const Result = () => <h2 style={inlineStyle}>Result</h2>;
-const ViewProgress = () => <h2>View Progress</h2>;
+import Calculation from "./calculation";
+
+const ProgressTracker = () => <h2>ProgressTracker</h2>;
+const About = () => <h2>About</h2>;
+const Profile = () => <h2>Profile</h2>;
 
 class App extends Component {
+	componentDidMount() {
+		this.props.fetchUser();
+	}
+
 	render() {
 		return (
 			<div>
 				<BrowserRouter>
 					<div>
 						<Header />
-						<Route exact={true} path="/" component={Dashboard} />
-						<Route exact={true} path="/" component={Result} />
-						<Route
-							exact={true}
-							path="/view_progress"
-							component={ViewProgress}
-						/>
+						<Route exact={true} path="/" component={Calculation} />
+						<Route exact={true} path="/progress" component={ProgressTracker} />
+						<Route exact={true} path="/about" component={About} />
+						<Route exact={true} path="/profile" component={Profile} />
 					</div>
 				</BrowserRouter>
 			</div>
@@ -31,4 +33,7 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default connect(
+	null,
+	actions
+)(App);
