@@ -1,18 +1,37 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import { reduxForm } from "redux-form";
 
 import DetailForm from "./DetailForm";
+import Result from "./Result";
 
 class Calculation extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			age: "",
+			gender: ""
+		};
+	}
+
+	calculateValue(values) {
+		const { age, gender } = values;
+		const updatedAge = age * 2;
+		const genValue = gender == "male" ? 100 : 90;
+		this.setState({
+			age: updatedAge,
+			gender: genValue
+		});
+	}
+
 	render() {
 		return (
 			<div>
-				<DetailForm />
+				<DetailForm onSubmit={values => this.calculateValue(values)} />
+				<Result {...this.state} />
 			</div>
 		);
 	}
 }
-
-function mapStateToProps(state) {}
-
-export default connect(mapStateToProps)(Calculation);
+export default reduxForm({
+	form: "calForm"
+})(Calculation);
