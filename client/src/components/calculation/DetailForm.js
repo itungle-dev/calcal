@@ -1,9 +1,16 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
-import { renderField } from "./renderInputs";
+import { Radio } from "@material-ui/core";
+import { renderField, renderRadio, renderSelect } from "./renderInputs";
 
 class DetailForm extends Component {
 	render() {
+		const genderRadios = [
+			{ value: "male", label: "Male" },
+			{ value: "female", label: "Female" },
+			{ value: "none", label: "N/A" }
+		];
+
 		const { pristine, submitting, reset, handleSubmit } = this.props;
 		return (
 			<div>
@@ -12,68 +19,26 @@ class DetailForm extends Component {
 					<div>
 						<Field name="age" component={renderField} label="Age" />
 					</div>
-					<label>Sex</label>
+
 					<div>
-						<label>
-							<Field name="sex" component="input" type="radio" value="male" />{" "}
-							Male
-						</label>
-						<label>
-							<Field name="sex" component="input" type="radio" value="female" />{" "}
-							Female
-						</label>
-						<label>
-							<Field name="sex" component="input" type="radio" value="none" />{" "}
-							Prefer not answer
-						</label>
+						<Field
+							name="gender"
+							component={renderRadio}
+							label="Gender"
+							radios={genderRadios}
+							showLabel={false}
+						/>
 					</div>
 					<div>
-						<label>Height</label>
-						<Field name="height" component="input" label="Height" />
-						<div>
-							<label>
-								<Field
-									name="height_unit"
-									component="input"
-									type="radio"
-									value="feet"
-								/>{" "}
-								feet
-							</label>
-							<label>
-								<Field
-									name="height_unit"
-									component="input"
-									type="radio"
-									value="cm"
-								/>{" "}
-								cm
-							</label>
-						</div>
-					</div>
-					<div>
-						<label>Weight</label>
-						<Field name="weight" component="input" label="weight" />
-						<div>
-							<label>
-								<Field
-									name="weight_unit"
-									component="input"
-									type="radio"
-									value="lbs"
-								/>{" "}
-								lbs
-							</label>
-							<label>
-								<Field
-									name="weight_unit"
-									component="input"
-									type="radio"
-									value="kgs"
-								/>{" "}
-								kgs
-							</label>
-						</div>
+						<Field
+							name="weight_unit"
+							component={renderSelect}
+							label="Weight"
+							showLabel={false}
+						>
+							<option value="lbs">Pounds</option>
+							<option value="kgs">Kilos</option>
+						</Field>
 					</div>
 					<button
 						type="button"
