@@ -7,7 +7,8 @@ import {
 	FormControlLabel,
 	Radio,
 	Select,
-	InputLabel
+	InputLabel,
+	MenuItem
 } from "@material-ui/core";
 
 export const renderField = ({
@@ -20,13 +21,18 @@ export const renderField = ({
 	// in material UI, TextField's error is a bool and helperText is String of
 	// in ReduxForm, Field's invalid is a bool and error is a string of errors
 	return (
-		<div>
-			<TextField id={label} label={label} value={value} margin="normal" />
-		</div>
+		<TextField
+			id={label}
+			label={label}
+			value={value}
+			margin="dense"
+			{...custom}
+			{...input}
+		/>
 	);
 };
-export const renderRadio = ({ input, ...custom }) => {
-	const radios = custom.radios.map(({ value, label }) => {
+export const renderRadio = ({ input, showLabel, ...custom }) => {
+	const radioOptions = custom.radios.map(({ value, label }) => {
 		return (
 			<FormControlLabel
 				key={value}
@@ -38,12 +44,12 @@ export const renderRadio = ({ input, ...custom }) => {
 	});
 
 	return (
-		<FormControl variant="filled">
+		<FormControl>
 			{custom.showLabel && (
 				<FormLabel component="legend">{custom.label}</FormLabel>
 			)}
 			<RadioGroup {...input} {...custom} row>
-				{radios}
+				{radioOptions}
 			</RadioGroup>
 		</FormControl>
 	);
@@ -52,15 +58,25 @@ export const renderRadio = ({ input, ...custom }) => {
 export const renderSelect = ({
 	input,
 	label,
+	menuItems,
+	showLabel,
 	meta: { touched, error },
 	children,
 	...custom
 }) => {
+	const menuOptions = menuItems.map(({ value, label }) => {
+		return (
+			<MenuItem key={value} value={value}>
+				{label}
+			</MenuItem>
+		);
+	});
+
 	return (
 		<FormControl error={touched && error}>
 			{custom.showLabel && <InputLabel>{label}</InputLabel>}
-			<Select native {...input} {...custom}>
-				{children}
+			<Select {...input} {...custom}>
+				{menuOptions}
 			</Select>
 		</FormControl>
 	);

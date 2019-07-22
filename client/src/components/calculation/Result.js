@@ -9,8 +9,14 @@ class Result extends Component {
 			<div>
 				<h3> Result </h3>
 				<ul>
-					<li>Age * 2: {this.props.age}</li>
+					<li>Age: {this.props.age}</li>
 					<li>Gender: {this.props.gender}</li>
+					<li>Weight: {this.props.weight}</li>
+					<li>Height_ft: {this.props.height_ft}</li>
+					<li>Height_in: {this.props.height_in}</li>
+					<li>Height_cm: {this.props.height_cm}</li>
+					<li>Weight in Kilo: {this.props.weightInKilo}</li>
+					<li>Height in Cm: {this.props.heightInCm}</li>
 				</ul>
 				<button
 					label="button"
