@@ -19,26 +19,30 @@ class Calculation extends Component {
 			height_in: 0,
 			height_cm: 0,
 			weightInKilo: 0,
-			heightInCm: 0
+			heightInCm: 0,
+			bmrNum: 0
 		};
 	}
 
-	handleCalculation = (values, props) => {
-		// console.log("cal val event", event);
-		console.log("cal val values", values);
-		console.log("cal val unit", props);
-
+	handleCalculation = (values, thunk, props) => {
 		const { age, gender, weight, height_ft, height_in, height_cm } = values;
 
 		const weightInKilo =
 			this.state.tabUnit === 0
 				? calcMethods.convertWeightToKilo(weight)
-				: weight;
+				: parseInt(weight);
 
 		const heightInCm =
 			this.state.tabUnit === 0
 				? calcMethods.convertHeightToCm(height_ft, height_in)
-				: height_cm;
+				: parseInt(height_cm);
+
+		const bmrNum = calcMethods.mifflinEquation(
+			gender,
+			age,
+			weightInKilo,
+			heightInCm
+		);
 
 		this.setState({
 			age: age,
@@ -48,7 +52,8 @@ class Calculation extends Component {
 			height_in: height_in,
 			height_cm: height_cm,
 			weightInKilo: weightInKilo,
-			heightInCm: heightInCm
+			heightInCm: heightInCm,
+			bmrNum: bmrNum
 		});
 	};
 
@@ -80,7 +85,10 @@ class Calculation extends Component {
 					/>
 				</Grid>
 				<Grid item sm={8}>
-					<Result {...this.state} onSave={values => console.log(values)} />
+					<Result
+						{...this.state}
+						onSave={values => console.log("in side onSave", values)}
+					/>
 				</Grid>
 			</Grid>
 		);

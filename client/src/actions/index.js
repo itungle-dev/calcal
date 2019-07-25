@@ -14,5 +14,5 @@ export const fetchUser = () => async dispatch => {
 };
 
 export const saveDetails = details => async dispatch => {
-	console.log(details);
+	console.log("action creator details", details);
 };

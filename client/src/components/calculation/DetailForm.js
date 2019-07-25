@@ -1,22 +1,16 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import {
-	Radio,
-	FormControl,
-	FormControlLabel,
-	MenuItem,
-	AppBar,
-	Tabs,
-	Tab,
 	Paper,
 	Grid,
 	Box,
 	InputAdornment,
-	InputLabel,
 	Typography,
-	Button
+	Button,
+	FormControlLabel,
+	Radio
 } from "@material-ui/core";
-import { renderField, renderRadio, renderSelect } from "./renderInputs";
+import { renderField, renderRadio } from "./renderInputs";
 
 class DetailForm extends Component {
 	// Render Weight TextField
@@ -28,6 +22,7 @@ class DetailForm extends Component {
 				component={renderField}
 				fullWidth
 				variant="outlined"
+				validate={[required, isNumber]}
 				InputProps={{
 					endAdornment: (
 						<InputAdornment position="end">
@@ -49,6 +44,7 @@ class DetailForm extends Component {
 						name="height_ft"
 						component={renderField}
 						variant="outlined"
+						validate={[required, isNumber]}
 						InputProps={{
 							endAdornment: <InputAdornment position="end">ft</InputAdornment>
 						}}
@@ -58,6 +54,7 @@ class DetailForm extends Component {
 						name="height_in"
 						component={renderField}
 						variant="outlined"
+						validate={[required, isNumber]}
 						InputProps={{
 							endAdornment: <InputAdornment position="end">in</InputAdornment>
 						}}
@@ -69,6 +66,7 @@ class DetailForm extends Component {
 					component={renderField}
 					fullWidth
 					variant="outlined"
+					validate={[required, isNumber]}
 					InputProps={{
 						endAdornment: <InputAdornment position="end">cm</InputAdornment>
 					}}
@@ -83,17 +81,17 @@ class DetailForm extends Component {
 			container: true,
 			justify: "space-around",
 			alignItems: "center",
-			spacing: 1
+			spacing: 3
 		};
 
 		const gridItemLabelProps = {
 			item: true,
-			sm: 2
+			sm: 3
 		};
 
 		const gridItemFieldProps = {
 			item: true,
-			sm: 10
+			sm: 9
 		};
 
 		return (
@@ -108,23 +106,26 @@ class DetailForm extends Component {
 
 	// Render all the rows
 	renderForms = tabIndex => {
-		const genderRadios = [
-			{ value: "male", label: "Male" },
-			{ value: "female", label: "Female" }
-		];
-
 		const { pristine, submitting, reset, handleSubmit } = this.props;
 		const ageField = (
-			<Field name="age" component={renderField} fullWidth variant="outlined" />
+			<Field
+				name="age"
+				component={renderField}
+				fullWidth
+				variant="outlined"
+				validate={[required, isNumber]}
+			/>
 		);
 		const genderRadioField = (
 			<Field
 				name="gender"
 				component={renderRadio}
 				label="Gender"
-				radios={genderRadios}
 				showLabel={false}
-			/>
+			>
+				<FormControlLabel value="female" control={<Radio />} label="Female" />
+				<FormControlLabel value="male" control={<Radio />} label="Male" />
+			</Field>
 		);
 		return (
 			<Paper>
@@ -168,7 +169,47 @@ class DetailForm extends Component {
 		return <div>{this.renderForms(tabUnit)}</div>;
 	}
 }
+const required = value => {
+	console.log("required in ", value);
+	return !value ? "Required" : undefined;
+};
+const isNumber = value =>
+	value && isNaN(Number(value)) ? "Must be a number" : undefined;
+const validate = (values, props) => {
+	console.log("validate values", values);
+	console.log("validate props", props);
+	const errors = {};
+	const requiredFields = [
+		"age",
+		"gender",
+		"weight",
+		"height_ft",
+		"height_in",
+		"height_cm"
+	];
+	requiredFields.forEach(field => {
+		console.log("value", field, values[field]);
+		if (field !== "gender" && values[field]) {
+			if (isNumber(values[field])) {
+				errors[field] = "Please enter a valid number";
+			}
+		}
+
+		if (!values[field]) {
+			if (field === "height_in" && values["height_ft"]) {
+			} else if (field === "height_ft" && values["height_in"]) {
+			} else {
+				errors[field] = "Required";
+			}
+		}
+	});
+
+	console.log("validate errors", errors);
+	return errors;
+};
 
 export default reduxForm({
-	form: "calForm"
+	form: "calForm",
+	validate: validate,
+	destroyOnUnmount: false
 })(DetailForm);

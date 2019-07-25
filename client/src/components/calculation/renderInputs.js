@@ -8,13 +8,17 @@ import {
 	Radio,
 	Select,
 	InputLabel,
-	MenuItem
+	MenuItem,
+	FormHelperText
 } from "@material-ui/core";
+import color from "@material-ui/core/colors/purple";
 
 export const renderField = ({
 	input,
 	label,
 	value,
+	type,
+	meta,
 	meta: { touched, error, invalid },
 	...custom
 }) => {
@@ -26,30 +30,27 @@ export const renderField = ({
 			label={label}
 			value={value}
 			margin="dense"
+			type={type}
+			error={touched && invalid}
+			helperText={touched && error}
 			{...custom}
 			{...input}
 		/>
 	);
 };
-export const renderRadio = ({ input, showLabel, ...custom }) => {
-	const radioOptions = custom.radios.map(({ value, label }) => {
-		return (
-			<FormControlLabel
-				key={value}
-				value={value}
-				control={<Radio />}
-				label={label}
-			/>
-		);
-	});
-
+export const renderRadio = ({
+	input,
+	showLabel,
+	children,
+	meta: { touched, error },
+	...custom
+}) => {
+	const errorBool = error ? true : false;
 	return (
-		<FormControl>
-			{custom.showLabel && (
-				<FormLabel component="legend">{custom.label}</FormLabel>
-			)}
+		<FormControl error={touched && errorBool}>
 			<RadioGroup {...input} {...custom} row>
-				{radioOptions}
+				{children}
+				{renderFromHelper({ touched, error })}
 			</RadioGroup>
 		</FormControl>
 	);
@@ -78,6 +79,15 @@ export const renderSelect = ({
 			<Select {...input} {...custom}>
 				{menuOptions}
 			</Select>
+			{renderFromHelper({ touched, error })}
 		</FormControl>
 	);
+};
+
+const renderFromHelper = ({ touched, error }) => {
+	if (!(touched && error)) {
+		return;
+	} else {
+		return <FormHelperText>{touched && error}</FormHelperText>;
+	}
 };

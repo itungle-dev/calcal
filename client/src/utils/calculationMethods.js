@@ -1,4 +1,13 @@
-export const mifflinEquation = ({ gender, age, weight, height }) => {};
+export const mifflinEquation = (gender, age, weight, height) => {
+	const genderNum = gender === "male" ? 5 : -161;
+
+	const basalMetabolicRate =
+		10 * parseInt(weight) +
+		6.25 * parseInt(height) -
+		5 * parseInt(age) +
+		genderNum;
+	return basalMetabolicRate;
+};
 
 export const convertWeightToKilo = pound => {
 	const KG_IN_LB = 2.20462262;

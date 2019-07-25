@@ -17,6 +17,7 @@ class Result extends Component {
 					<li>Height_cm: {this.props.height_cm}</li>
 					<li>Weight in Kilo: {this.props.weightInKilo}</li>
 					<li>Height in Cm: {this.props.heightInCm}</li>
+					<li>bmrNum: {this.props.bmrNum}</li>
 				</ul>
 				<button
 					label="button"
