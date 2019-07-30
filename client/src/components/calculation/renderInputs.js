@@ -61,6 +61,7 @@ export const renderSelect = ({
 	label,
 	menuItems,
 	showLabel,
+	variant,
 	meta: { touched, error },
 	children,
 	...custom
@@ -74,7 +75,11 @@ export const renderSelect = ({
 	});
 
 	return (
-		<FormControl error={touched && error}>
+		<FormControl
+			error={touched && error}
+			variant={variant}
+			style={{ width: "100%" }}
+		>
 			{custom.showLabel && <InputLabel>{label}</InputLabel>}
 			<Select {...input} {...custom}>
 				{menuOptions}

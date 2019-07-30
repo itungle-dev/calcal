@@ -10,9 +10,14 @@ import {
 	FormControlLabel,
 	Radio
 } from "@material-ui/core";
-import { renderField, renderRadio } from "./renderInputs";
+import { renderField, renderRadio, renderSelect } from "./renderInputs";
 
 class DetailForm extends Component {
+	constructor(props) {
+		super(props);
+		this.props.initialize({ activity: 1.2 });
+	}
+
 	// Render Weight TextField
 	renderWeightField = tabIndex => {
 		const weightUnits = ["lbs", "kgs"];
@@ -22,7 +27,7 @@ class DetailForm extends Component {
 				component={renderField}
 				fullWidth
 				variant="outlined"
-				validate={[required, isNumber]}
+				validate={[required, isNumber, isWeightInRange]}
 				InputProps={{
 					endAdornment: (
 						<InputAdornment position="end">
@@ -44,7 +49,7 @@ class DetailForm extends Component {
 						name="height_ft"
 						component={renderField}
 						variant="outlined"
-						validate={[required, isNumber]}
+						validate={[isNumber, isHeightFtInRange]}
 						InputProps={{
 							endAdornment: <InputAdornment position="end">ft</InputAdornment>
 						}}
@@ -54,7 +59,7 @@ class DetailForm extends Component {
 						name="height_in"
 						component={renderField}
 						variant="outlined"
-						validate={[required, isNumber]}
+						validate={[isNumber, isHeightInchInRange]}
 						InputProps={{
 							endAdornment: <InputAdornment position="end">in</InputAdornment>
 						}}
@@ -66,7 +71,7 @@ class DetailForm extends Component {
 					component={renderField}
 					fullWidth
 					variant="outlined"
-					validate={[required, isNumber]}
+					validate={[required, isNumber, isHeightCmInRange]}
 					InputProps={{
 						endAdornment: <InputAdornment position="end">cm</InputAdornment>
 					}}
@@ -81,7 +86,7 @@ class DetailForm extends Component {
 			container: true,
 			justify: "space-around",
 			alignItems: "center",
-			spacing: 3
+			spacing: 2
 		};
 
 		const gridItemLabelProps = {
@@ -106,6 +111,14 @@ class DetailForm extends Component {
 
 	// Render all the rows
 	renderForms = tabIndex => {
+		const activities = [
+			{ label: "Little or no exercise", value: 1.2 },
+			{ label: "Exercise 1-3 times/week", value: 1.375 },
+			{ label: "Exercise 3-5 times/week", value: 1.55 },
+			{ label: "Exercise 6-7 times/week", value: 1.725 },
+			{ label: "Exercise 9+ times/week", value: 2.0 }
+		];
+
 		const { pristine, submitting, reset, handleSubmit } = this.props;
 		const ageField = (
 			<Field
@@ -113,7 +126,7 @@ class DetailForm extends Component {
 				component={renderField}
 				fullWidth
 				variant="outlined"
-				validate={[required, isNumber]}
+				validate={[required, isNumber, isAgeInRange]}
 			/>
 		);
 		const genderRadioField = (
@@ -127,14 +140,26 @@ class DetailForm extends Component {
 				<FormControlLabel value="male" control={<Radio />} label="Male" />
 			</Field>
 		);
+
+		const activitySelectField = (
+			<Field
+				name="activity"
+				component={renderSelect}
+				menuItems={activities}
+				variant="outlined"
+				value={1.2}
+			/>
+		);
+
 		return (
-			<Paper>
+			<Paper square>
 				<form onSubmit={handleSubmit}>
 					<Box p={2}>
 						{this.renderFieldRow("Age", ageField)}
 						{this.renderFieldRow("Gender", genderRadioField)}
 						{this.renderFieldRow("Weight", this.renderWeightField(tabIndex))}
 						{this.renderFieldRow("Height", this.renderHeightField(tabIndex))}
+						{this.renderFieldRow("Activity level", activitySelectField)}
 						<Grid
 							container
 							spacing={3}
@@ -175,6 +200,23 @@ const required = value => {
 };
 const isNumber = value =>
 	value && isNaN(Number(value)) ? "Must be a number" : undefined;
+
+const isNumInRange = (value, low = 0, high = Number.POSITIVE_INFINITY) => {
+	const validNumberMsg =
+		high === Number.POSITIVE_INFINITY
+			? `greater or equal to ${low}`
+			: `between ${low} and ${high}`;
+	return value && !(Number(value) >= low && Number(value) <= high)
+		? `Must be a number ${validNumberMsg}`
+		: undefined;
+};
+
+const isAgeInRange = value => isNumInRange(value, 13, 90);
+const isWeightInRange = value => isNumInRange(value, 20);
+const isHeightInchInRange = value => isNumInRange(value, 0, 100);
+const isHeightFtInRange = value => isNumInRange(value, 0, 9);
+const isHeightCmInRange = value => isNumInRange(value, 20, 275);
+
 const validate = (values, props) => {
 	console.log("validate values", values);
 	console.log("validate props", props);
@@ -188,11 +230,16 @@ const validate = (values, props) => {
 		"height_cm"
 	];
 	requiredFields.forEach(field => {
-		console.log("value", field, values[field]);
 		if (field !== "gender" && values[field]) {
 			if (isNumber(values[field])) {
 				errors[field] = "Please enter a valid number";
 			}
+		}
+		if (
+			(field === "height_in") & (Number(values["height_ft"]) >= 1) &&
+			Number([values.height_in]) > 12
+		) {
+			errors["height_in"] = "Must be a number between 0 and 12";
 		}
 
 		if (!values[field]) {
