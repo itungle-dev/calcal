@@ -11,6 +11,7 @@ import {
 	Radio
 } from "@material-ui/core";
 import { renderField, renderRadio, renderSelect } from "./renderInputs";
+import FieldRow from "./FieldRow";
 
 class DetailForm extends Component {
 	constructor(props) {
@@ -80,8 +81,16 @@ class DetailForm extends Component {
 		return heightField;
 	};
 
-	// Render each row using Grid system
-	renderFieldRow = (inputLabel, field) => {
+	// Render all the rows
+	renderForms = tabIndex => {
+		const activities = [
+			{ label: "Little or no exercise", value: 1.2 },
+			{ label: "Exercise 1-3 times/week", value: 1.375 },
+			{ label: "Exercise 3-5 times/week", value: 1.55 },
+			{ label: "Exercise 6-7 times/week", value: 1.725 },
+			{ label: "Exercise 9+ times/week", value: 2.0 }
+		];
+
 		const gridContainerProps = {
 			container: true,
 			justify: "space-around",
@@ -98,26 +107,6 @@ class DetailForm extends Component {
 			item: true,
 			sm: 9
 		};
-
-		return (
-			<Grid {...gridContainerProps}>
-				<Grid {...gridItemLabelProps}>
-					<Typography align="right">{inputLabel}</Typography>
-				</Grid>
-				<Grid {...gridItemFieldProps}>{field}</Grid>
-			</Grid>
-		);
-	};
-
-	// Render all the rows
-	renderForms = tabIndex => {
-		const activities = [
-			{ label: "Little or no exercise", value: 1.2 },
-			{ label: "Exercise 1-3 times/week", value: 1.375 },
-			{ label: "Exercise 3-5 times/week", value: 1.55 },
-			{ label: "Exercise 6-7 times/week", value: 1.725 },
-			{ label: "Exercise 9+ times/week", value: 2.0 }
-		];
 
 		const { pristine, submitting, reset, handleSubmit } = this.props;
 		const ageField = (
@@ -150,16 +139,37 @@ class DetailForm extends Component {
 				value={1.2}
 			/>
 		);
+		const weightField = this.renderWeightField(tabIndex);
+		const heightField = this.renderHeightField(tabIndex);
+		const labelsList = ["Age", "Gender", "Weight", "Height", "Activity level"];
+		const fieldsList = [
+			ageField,
+			genderRadioField,
+			weightField,
+			heightField,
+			activitySelectField
+		];
+		const fieldRows = fieldsList.map((field, index) => {
+			const labelTypograph = (
+				<Typography align="right">{labelsList[index]}</Typography>
+			);
+			return (
+				<FieldRow
+					key={index}
+					label={labelTypograph}
+					field={field}
+					containerProps={gridContainerProps}
+					itemLabelProps={gridItemLabelProps}
+					itemFieldProps={gridItemFieldProps}
+				/>
+			);
+		});
 
 		return (
 			<Paper square>
 				<form onSubmit={handleSubmit}>
 					<Box p={2}>
-						{this.renderFieldRow("Age", ageField)}
-						{this.renderFieldRow("Gender", genderRadioField)}
-						{this.renderFieldRow("Weight", this.renderWeightField(tabIndex))}
-						{this.renderFieldRow("Height", this.renderHeightField(tabIndex))}
-						{this.renderFieldRow("Activity level", activitySelectField)}
+						{fieldRows}
 						<Grid
 							container
 							spacing={3}
@@ -195,7 +205,6 @@ class DetailForm extends Component {
 	}
 }
 const required = value => {
-	console.log("required in ", value);
 	return !value ? "Required" : undefined;
 };
 const isNumber = value =>
@@ -218,8 +227,6 @@ const isHeightFtInRange = value => isNumInRange(value, 0, 9);
 const isHeightCmInRange = value => isNumInRange(value, 20, 275);
 
 const validate = (values, props) => {
-	console.log("validate values", values);
-	console.log("validate props", props);
 	const errors = {};
 	const requiredFields = [
 		"age",
@@ -251,7 +258,6 @@ const validate = (values, props) => {
 		}
 	});
 
-	console.log("validate errors", errors);
 	return errors;
 };
 

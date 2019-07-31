@@ -58,7 +58,7 @@ export const renderRadio = ({
 
 export const renderSelect = ({
 	input,
-	label,
+label,
 	menuItems,
 	showLabel,
 	variant,

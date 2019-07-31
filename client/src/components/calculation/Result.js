@@ -9,7 +9,7 @@ import {
 	GridList,
 	GridListTile
 } from "@material-ui/core";
-
+import ResultCaloriesBox from "./ResultCaloriesBox";
 import * as actions from "../../actions";
 
 class Result extends Component {
@@ -29,6 +29,31 @@ class Result extends Component {
 			bulkingDailyCalories,
 			bulkingWeeklyCalories
 		} = this.props;
+
+		const dailyCaloriesList = [
+			maintenanceDailyCalories,
+			cuttingDailyCalories,
+			bulkingDailyCalories
+		];
+
+		const weeklyCaloriesList = [
+			maintenanceWeeklyCalories,
+			cuttingWeeklyCalories,
+			bulkingWeeklyCalories
+		];
+
+		const phaseLabelList = ["Maintenance", "Cutting", "Bulking"];
+		const resultBoxes = phaseLabelList.map((label, index) => {
+			return (
+				<Grid item xs={4}>
+					<ResultCaloriesBox
+						label={label}
+						weeklyCalories={weeklyCaloriesList[index]}
+						dailyCalories={dailyCaloriesList[index]}
+					/>
+				</Grid>
+			);
+		});
 
 		const heightInput =
 			tabUnit === 1
@@ -51,47 +76,7 @@ class Result extends Component {
 					</Typography>
 				</Box>
 				<Grid container justify="space-around" spacing={1}>
-					<Grid item xs={4}>
-						<Box p={2} bgcolor="red">
-							<Paper square>
-								<Typography variant="h6">Maintenance</Typography>
-							</Paper>
-							<Paper square>
-								<Typography>
-									{maintenanceDailyCalories} Calories per day
-								</Typography>
-								<Typography>
-									{maintenanceWeeklyCalories} Calories per week
-								</Typography>
-							</Paper>
-						</Box>
-					</Grid>
-					<Grid item xs={4}>
-						<Box p={2} bgcolor="red">
-							<Paper square>
-								<Typography variant="h6">Cutting</Typography>
-							</Paper>
-							<Paper square>
-								<Typography>{cuttingDailyCalories} Calories per day</Typography>
-								<Typography>
-									{cuttingWeeklyCalories} Calories per week
-								</Typography>
-							</Paper>
-						</Box>
-					</Grid>
-					<Grid item xs={4}>
-						<Box p={2} bgcolor="red">
-							<Paper square>
-								<Typography variant="h6">Bulking</Typography>
-							</Paper>
-							<Paper square>
-								<Typography>{bulkingDailyCalories} Calories per day</Typography>
-								<Typography>
-									{bulkingWeeklyCalories} Calories per week
-								</Typography>
-							</Paper>
-						</Box>
-					</Grid>
+					{resultBoxes}
 				</Grid>
 				<Box align="center" p={2}>
 					<Button

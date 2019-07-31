@@ -9,11 +9,10 @@ export const mifflinEquation = (
 ) => {
 	const genderNum = gender === "male" ? 5 : -161;
 
-	const basalMetabolicRate = Math.round(
-		10 * Number(weight) + 6.25 * Number(height) - 5 * Number(age) + genderNum
-	);
+	const basalMetabolicRate =
+		10 * Number(weight) + 6.25 * Number(height) - 5 * Number(age) + genderNum;
 
-	const maintenanceDailyCalories = basalMetabolicRate * activity;
+	const maintenanceDailyCalories = Math.round(basalMetabolicRate * activity);
 
 	const cuttingCalories = maintenanceDailyCalories - cutCalories;
 	const bulkingCalories = maintenanceDailyCalories + bulkCalories;
@@ -32,6 +31,28 @@ export const mifflinEquation = (
 	return calculatedCalories;
 };
 
+export const macronutrientInGrams = (
+	totalCalories,
+	percentages = [40, 35, 20]
+) => {
+	const carbs = Math.round(((percentages[0] / 100) * totalCalories) / 4);
+	const proteins = Math.round(((percentages[1] / 100) * totalCalories) / 4);
+	const fats = Math.round(((percentages[2] / 100) * totalCalories) / 9);
+
+	return [carbs, proteins, fats];
+};
+
+export const macronutrientInCalories = (
+	totalCalories,
+	percentages = [40, 35, 20]
+) => {
+	const carbs = Math.round((percentages[0] / 100) * totalCalories);
+	const proteins = Math.round((percentages[1] / 100) * totalCalories);
+	const fats = Math.round((percentages[2] / 100) * totalCalories);
+
+	return [carbs, proteins, fats];
+};
+
 export const convertWeightToKilo = pound => {
 	const KG_IN_LB = 2.20462262;
 
@@ -42,9 +63,6 @@ export const convertWeightToKilo = pound => {
 
 export const convertHeightToCm = (inches, feet = 0) => {
 	const INCH_IN_CM = 2.54;
-	console.log("feet", feet);
-	console.log("inches", inches);
-
 	const heightInInches = Number(feet) * 12 + Number(inches);
 
 	const heightInCm = Math.round(heightInInches * INCH_IN_CM);
