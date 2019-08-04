@@ -4,8 +4,8 @@ export const mifflinEquation = (
 	weight,
 	height,
 	activity = 1.2,
-	cutCalories = 300,
-	bulkCalories = 300
+	cutCalories = 250,
+	bulkCalories = 250
 ) => {
 	const genderNum = gender === "male" ? 5 : -161;
 

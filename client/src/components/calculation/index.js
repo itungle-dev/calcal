@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { reduxForm } from "redux-form";
-import { Grid, Paper, Tabs, Tab } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+import UnitTabs from "./UnitTabs";
 import DetailForm from "./DetailForm";
 import Result from "./Result";
 import * as calcMethods from "../../utils/calculationMethods";
+import { macrosRatioFields } from "./data/selectFieldData";
 
 class Calculation extends Component {
 	constructor(props) {
@@ -15,9 +17,8 @@ class Calculation extends Component {
 			age: 0,
 			gender: "",
 			weight: 0,
-			height_ft: 0,
-			height_in: 0,
-			height_cm: 0,
+			heightBig: 0,
+			heightSmall: 0,
 			weightInKilo: 0,
 			heightInCm: 0,
 			maintenanceDailyCalories: 0,
@@ -25,7 +26,15 @@ class Calculation extends Component {
 			cuttingDailyCalories: 0,
 			cuttingWeeklyCalories: 0,
 			bulkingDailyCalories: 0,
-			bulkingWeeklyCalories: 0
+			bulkingWeeklyCalories: 0,
+			activity: 1.2,
+			goal: 1,
+			macros: 1,
+			macrosRatio: {
+				proteins: { ratio: 30, calories: 0, grams: 0 },
+				carbs: { ratio: 30, calories: 0, grams: 0 },
+				fats: { ratio: 30, calories: 0, grams: 0 }
+			}
 		};
 	}
 
@@ -34,11 +43,32 @@ class Calculation extends Component {
 			age,
 			gender,
 			weight,
-			height_ft,
-			height_in,
-			height_cm,
-			activity
+			heightBig,
+			heightSmall,
+			activity,
+			goal,
+			macros
 		} = values;
+
+		const oneBigUnitToSmallUnit = this.state.tabUnit === 0 ? 12 : 10;
+
+		const updatedHeightBig =
+			Number(heightBig) + Math.floor(heightSmall / oneBigUnitToSmallUnit);
+		const updatedHeightSmall = Number(heightSmall) % oneBigUnitToSmallUnit;
+
+		console.log("macros", macros);
+		console.log(
+			"macrosRatioFields[macros].Proteins",
+			macrosRatioFields[macros].proteins
+		);
+		console.log(
+			"macrosRatioFields[macros].Carbs",
+			macrosRatioFields[macros].carbs
+		);
+		console.log(
+			"macrosRatioFields[macros].Fats",
+			macrosRatioFields[macros].fats
+		);
 
 		const weightInKilo =
 			this.state.tabUnit === 0
@@ -47,8 +77,8 @@ class Calculation extends Component {
 
 		const heightInCm =
 			this.state.tabUnit === 0
-				? calcMethods.convertHeightToCm(height_in, height_ft)
-				: parseInt(height_cm);
+				? calcMethods.convertHeightToCm(heightBig, heightSmall)
+				: Number(heightBig) * 10 + Number(heightSmall);
 
 		const {
 			maintenanceDailyCalories,
@@ -72,9 +102,8 @@ class Calculation extends Component {
 			age: age,
 			gender: gender,
 			weight: weight,
-			height_ft: height_ft,
-			height_in: height_in,
-			height_cm: height_cm,
+			heightBig: updatedHeightBig,
+			heightSmall: updatedHeightSmall,
 			weightInKilo: weightInKilo,
 			heightInCm: heightInCm,
 			maintenanceDailyCalories: maintenanceDailyCalories,
@@ -82,7 +111,14 @@ class Calculation extends Component {
 			cuttingDailyCalories: cuttingDailyCalories,
 			cuttingWeeklyCalories: cuttingWeeklyCalories,
 			bulkingDailyCalories: bulkingDailyCalories,
-			bulkingWeeklyCalories: bulkingWeeklyCalories
+			bulkingWeeklyCalories: bulkingWeeklyCalories,
+			goal: goal,
+			activity: activity,
+			macrosRatio: {
+				proteins: macrosRatioFields[macros].proteins,
+				carbs: macrosRatioFields[macros].carbs,
+				fats: macrosRatioFields[macros].fats
+			}
 		});
 	};
 
@@ -107,18 +143,10 @@ class Calculation extends Component {
 		return (
 			<Grid container spacing={3} justify="flex-start" alignItems="stretch">
 				<Grid item sm={4}>
-					<Paper square>
-						<Tabs
-							value={this.state.tabUnit}
-							onChange={this.handleTabChange}
-							indicatorColor="primary"
-							textColor="primary"
-							centered
-						>
-							<Tab label="US Units" />
-							<Tab label="Metric Units" />
-						</Tabs>
-					</Paper>
+					<UnitTabs
+						tabUnit={this.state.tabUnit}
+						handleTabChange={this.handleTabChange}
+					/>
 					<DetailForm
 						onSubmit={this.handleCalculation}
 						tabUnit={this.state.tabUnit}

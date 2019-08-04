@@ -2,16 +2,11 @@ import React from "react";
 import {
 	TextField,
 	FormControl,
-	FormLabel,
 	RadioGroup,
-	FormControlLabel,
-	Radio,
 	Select,
 	InputLabel,
-	MenuItem,
 	FormHelperText
 } from "@material-ui/core";
-import color from "@material-ui/core/colors/purple";
 
 export const renderField = ({
 	input,
@@ -58,7 +53,7 @@ export const renderRadio = ({
 
 export const renderSelect = ({
 	input,
-label,
+	label,
 	menuItems,
 	showLabel,
 	variant,
@@ -66,14 +61,6 @@ label,
 	children,
 	...custom
 }) => {
-	const menuOptions = menuItems.map(({ value, label }) => {
-		return (
-			<MenuItem key={value} value={value}>
-				{label}
-			</MenuItem>
-		);
-	});
-
 	return (
 		<FormControl
 			error={touched && error}
@@ -82,7 +69,7 @@ label,
 		>
 			{custom.showLabel && <InputLabel>{label}</InputLabel>}
 			<Select {...input} {...custom}>
-				{menuOptions}
+				{menuItems}
 			</Select>
 			{renderFromHelper({ touched, error })}
 		</FormControl>

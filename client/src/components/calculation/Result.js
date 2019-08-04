@@ -1,16 +1,9 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-	Grid,
-	Button,
-	Typography,
-	Paper,
-	Box,
-	GridList,
-	GridListTile
-} from "@material-ui/core";
+import { Grid, Button, Typography, Paper, Box } from "@material-ui/core";
 import ResultCaloriesBox from "./ResultCaloriesBox";
 import * as actions from "../../actions";
+import ResultChart from "./ResultChart";
 
 class Result extends Component {
 	render() {
@@ -19,15 +12,16 @@ class Result extends Component {
 			age,
 			gender,
 			weight,
-			height_ft,
-			height_in,
-			height_cm,
+			heightBig,
+			heightSmall,
 			maintenanceDailyCalories,
 			maintenanceWeeklyCalories,
 			cuttingDailyCalories,
 			cuttingWeeklyCalories,
 			bulkingDailyCalories,
-			bulkingWeeklyCalories
+			bulkingWeeklyCalories,
+			macros,
+			macrosRatio
 		} = this.props;
 
 		const dailyCaloriesList = [
@@ -45,7 +39,7 @@ class Result extends Component {
 		const phaseLabelList = ["Maintenance", "Cutting", "Bulking"];
 		const resultBoxes = phaseLabelList.map((label, index) => {
 			return (
-				<Grid item xs={4}>
+				<Grid item xs={4} key={index}>
 					<ResultCaloriesBox
 						label={label}
 						weeklyCalories={weeklyCaloriesList[index]}
@@ -54,20 +48,26 @@ class Result extends Component {
 				</Grid>
 			);
 		});
+		console.log("macros", macros);
+		console.log("macrosRatio", macrosRatio);
+		const macrosData = [
+			{ name: "Proteins", value: macrosRatio.proteins.ratio, color: "orange" },
+			{ name: "Carbs", value: macrosRatio.carbs.ratio, color: "red" },
+			{ name: "Fats", value: macrosRatio.fats.ratio, color: "green" }
+		];
+		const heightBigUnit = tabUnit === 0 ? "ft" : "m";
+		const heightSmallUnit = tabUnit === 0 ? "in" : "cm";
 
-		const heightInput =
-			tabUnit === 1
-				? `${height_cm} cm`
-				: height_ft
-				? `${height_ft} ft ${height_in} in`
-				: `${height_in} in`;
+		const heightInput = heightBig
+			? `${heightBig} ${heightBigUnit} and ${heightSmall} ${heightSmallUnit}`
+			: `${heightSmall} ${heightSmallUnit}`;
 
 		const weightUnit = tabUnit === 0 ? `lbs` : `kgs`;
 
 		return (
 			<Paper square>
-				<Box bgcolor="white" p={2}>
-					<Typography variant="h5">Your Result</Typography>
+				<Box bgcolor="green" p={1}>
+					<Typography variant="h5">Result</Typography>
 				</Box>
 				<Box p={2}>
 					<Typography>
@@ -77,6 +77,9 @@ class Result extends Component {
 				</Box>
 				<Grid container justify="space-around" spacing={1}>
 					{resultBoxes}
+				</Grid>
+				<Grid container justify="space-around" spacing={1}>
+					<ResultChart data={macrosData} />;
 				</Grid>
 				<Box align="center" p={2}>
 					<Button
@@ -88,7 +91,6 @@ class Result extends Component {
 								age: this.props.age,
 								gender: this.props.gender
 							};
-							console.log("inside save button props", this.props);
 							return this.props.saveDetails(userDetails);
 						}}
 					>
@@ -100,7 +102,7 @@ class Result extends Component {
 	}
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(ownProps) {
 	const age = ownProps.age;
 	const gender = ownProps.gender;
 	return {

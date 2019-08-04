@@ -43,7 +43,7 @@ class Header extends Component {
 							<Link component={RouterLink} to="/" style={{ padding: "10px" }}>
 								Calculation
 							</Link>
-							<Link
+							{/* <Link
 								component={RouterLink}
 								to="/progress"
 								style={{ padding: "10px" }}
@@ -56,7 +56,7 @@ class Header extends Component {
 								style={{ padding: "10px" }}
 							>
 								About
-							</Link>
+							</Link> */}
 							{this.renderDynamicHeader()}
 						</nav>
 					</Toolbar>
