@@ -35,22 +35,22 @@ export const macronutrientInGrams = (
 	totalCalories,
 	percentages = [40, 35, 20]
 ) => {
-	const carbs = Math.round(((percentages[0] / 100) * totalCalories) / 4);
-	const proteins = Math.round(((percentages[1] / 100) * totalCalories) / 4);
+	const proteins = Math.round(((percentages[0] / 100) * totalCalories) / 4);
+	const carbs = Math.round(((percentages[1] / 100) * totalCalories) / 4);
 	const fats = Math.round(((percentages[2] / 100) * totalCalories) / 9);
 
-	return [carbs, proteins, fats];
+	return { proteins, carbs, fats };
 };
 
 export const macronutrientInCalories = (
 	totalCalories,
 	percentages = [40, 35, 20]
 ) => {
-	const carbs = Math.round((percentages[0] / 100) * totalCalories);
-	const proteins = Math.round((percentages[1] / 100) * totalCalories);
+	const proteins = Math.round((percentages[0] / 100) * totalCalories);
+	const carbs = Math.round((percentages[1] / 100) * totalCalories);
 	const fats = Math.round((percentages[2] / 100) * totalCalories);
 
-	return [carbs, proteins, fats];
+	return { proteins, carbs, fats };
 };
 
 export const convertWeightToKilo = pound => {

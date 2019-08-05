@@ -29,9 +29,9 @@ class Calculation extends Component {
 			bulkingWeeklyCalories: 0,
 			activity: 1.2,
 			goal: 1,
-			macros: 1,
+			macros: 0,
 			macrosRatio: {
-				proteins: { ratio: 30, calories: 0, grams: 0 },
+				proteins: { ratio: 40, calories: 0, grams: 0 },
 				carbs: { ratio: 30, calories: 0, grams: 0 },
 				fats: { ratio: 30, calories: 0, grams: 0 }
 			}
@@ -55,20 +55,6 @@ class Calculation extends Component {
 		const updatedHeightBig =
 			Number(heightBig) + Math.floor(heightSmall / oneBigUnitToSmallUnit);
 		const updatedHeightSmall = Number(heightSmall) % oneBigUnitToSmallUnit;
-
-		console.log("macros", macros);
-		console.log(
-			"macrosRatioFields[macros].Proteins",
-			macrosRatioFields[macros].proteins
-		);
-		console.log(
-			"macrosRatioFields[macros].Carbs",
-			macrosRatioFields[macros].carbs
-		);
-		console.log(
-			"macrosRatioFields[macros].Fats",
-			macrosRatioFields[macros].fats
-		);
 
 		const weightInKilo =
 			this.state.tabUnit === 0
@@ -95,6 +81,25 @@ class Calculation extends Component {
 			activity
 		);
 
+		const {
+			proteinsGrams,
+			carbsGrams,
+			fatsGrams
+		} = calcMethods.macronutrientInGrams(cuttingDailyCalories, [
+			macros.proteins,
+			macros.carbs,
+			macros.fats
+		]);
+		const {
+			proteinsCalories,
+			carbsCalories,
+			fatsCalories
+		} = calcMethods.macronutrientInCalories(cuttingDailyCalories, [
+			macros.proteins,
+			macros.carbs,
+			macros.fats
+		]);
+
 		const prevShowResult = this.state.showResult;
 
 		this.setState({
@@ -115,9 +120,21 @@ class Calculation extends Component {
 			goal: goal,
 			activity: activity,
 			macrosRatio: {
-				proteins: macrosRatioFields[macros].proteins,
-				carbs: macrosRatioFields[macros].carbs,
-				fats: macrosRatioFields[macros].fats
+				proteins: {
+					ratio: macrosRatioFields[macros].proteins,
+					calories: proteinsCalories,
+					grams: proteinsGrams
+				},
+				carbs: {
+					ratio: macrosRatioFields[macros].carbs,
+					calories: carbsCalories,
+					grams: carbsGrams
+				},
+				fats: {
+					ratio: macrosRatioFields[macros].fats,
+					calories: fatsCalories,
+					grams: fatsGrams
+				}
 			}
 		});
 	};

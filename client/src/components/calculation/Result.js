@@ -20,7 +20,7 @@ class Result extends Component {
 			cuttingWeeklyCalories,
 			bulkingDailyCalories,
 			bulkingWeeklyCalories,
-			macros,
+
 			macrosRatio
 		} = this.props;
 
@@ -48,13 +48,13 @@ class Result extends Component {
 				</Grid>
 			);
 		});
-		console.log("macros", macros);
-		console.log("macrosRatio", macrosRatio);
-		const macrosData = [
+
+		let macrosData = [
 			{ name: "Proteins", value: macrosRatio.proteins.ratio, color: "orange" },
 			{ name: "Carbs", value: macrosRatio.carbs.ratio, color: "red" },
 			{ name: "Fats", value: macrosRatio.fats.ratio, color: "green" }
 		];
+
 		const heightBigUnit = tabUnit === 0 ? "ft" : "m";
 		const heightSmallUnit = tabUnit === 0 ? "in" : "cm";
 

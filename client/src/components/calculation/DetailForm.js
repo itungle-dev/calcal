@@ -13,7 +13,7 @@ import MacrosRatio from "./FormRows/MacrosRatio";
 class DetailForm extends Component {
 	constructor(props) {
 		super(props);
-		this.props.initialize({ activity: 1.2, goal: 1, macros: 1 });
+		this.props.initialize({ activity: 1.2, goal: 0, macros: 0 });
 	}
 
 	renderForms = tabIndex => {

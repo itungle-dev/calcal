@@ -5,9 +5,9 @@ import { MenuItem } from "@material-ui/core";
 
 const Goal = () => {
 	const goals = [
-		{ label: "Maintenance", value: 1 },
-		{ label: "Cutting", value: 2 },
-		{ label: "Bulking", value: 3 }
+		{ label: "Maintenance", value: 0 },
+		{ label: "Cutting", value: 1 },
+		{ label: "Bulking", value: 2 }
 	];
 
 	const goalOptions = goals.map(({ label, value }, index) => {

@@ -6,12 +6,24 @@ class ResultChart extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: []
+			data: this.props.data
 		};
 	}
 
 	componentDidMount() {
 		this.setState({ data: this.props.data });
+	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if (
+			this.props.data[0].value !== prevProps.data[0].value ||
+			this.props.data[1].value !== prevProps.data[1].value ||
+			this.props.data[2].value !== prevProps.data[2].value
+		) {
+			this.setState((prevState, props) => {
+				return { data: props.data };
+			});
+		}
 	}
 
 	renderCustomizedLabel = ({
@@ -45,6 +57,8 @@ class ResultChart extends Component {
 	};
 
 	render() {
+		console.log("resultChart this.state.data", this.state.data);
+		console.log("resultChart this.props.data", this.props.data);
 		return (
 			<PieChart width={300} height={300}>
 				<Pie
