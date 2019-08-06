@@ -29,8 +29,8 @@ class Calculation extends Component {
 			bulkingWeeklyCalories: 0,
 			activity: 1.2,
 			goal: 1,
-			macros: 0,
-			macrosRatio: {
+
+			macronutrient: {
 				proteins: { ratio: 40, calories: 0, grams: 0 },
 				carbs: { ratio: 30, calories: 0, grams: 0 },
 				fats: { ratio: 30, calories: 0, grams: 0 }
@@ -49,6 +49,8 @@ class Calculation extends Component {
 			goal,
 			macros
 		} = values;
+		//
+		const { proteinsRatio, carbsRatio, fatsRatio } = macrosRatioFields[macros];
 
 		const oneBigUnitToSmallUnit = this.state.tabUnit === 0 ? 12 : 10;
 
@@ -81,23 +83,24 @@ class Calculation extends Component {
 			activity
 		);
 
+		console.log("macros", macros);
 		const {
 			proteinsGrams,
 			carbsGrams,
 			fatsGrams
-		} = calcMethods.macronutrientInGrams(cuttingDailyCalories, [
-			macros.proteins,
-			macros.carbs,
-			macros.fats
+		} = calcMethods.macronutrientInGrams(Number(cuttingDailyCalories), [
+			proteinsRatio,
+			carbsRatio,
+			fatsRatio
 		]);
 		const {
 			proteinsCalories,
 			carbsCalories,
 			fatsCalories
-		} = calcMethods.macronutrientInCalories(cuttingDailyCalories, [
-			macros.proteins,
-			macros.carbs,
-			macros.fats
+		} = calcMethods.macronutrientInCalories(Number(cuttingDailyCalories), [
+			proteinsRatio,
+			carbsRatio,
+			fatsRatio
 		]);
 
 		const prevShowResult = this.state.showResult;
@@ -119,19 +122,19 @@ class Calculation extends Component {
 			bulkingWeeklyCalories: bulkingWeeklyCalories,
 			goal: goal,
 			activity: activity,
-			macrosRatio: {
+			macronutrient: {
 				proteins: {
-					ratio: macrosRatioFields[macros].proteins,
+					ratio: proteinsRatio,
 					calories: proteinsCalories,
 					grams: proteinsGrams
 				},
 				carbs: {
-					ratio: macrosRatioFields[macros].carbs,
+					ratio: carbsRatio,
 					calories: carbsCalories,
 					grams: carbsGrams
 				},
 				fats: {
-					ratio: macrosRatioFields[macros].fats,
+					ratio: fatsRatio,
 					calories: fatsCalories,
 					grams: fatsGrams
 				}

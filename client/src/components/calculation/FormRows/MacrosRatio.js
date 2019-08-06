@@ -6,10 +6,10 @@ import { macrosRatioFields } from "../data/selectFieldData";
 
 const MacrosRatio = () => {
 	const macroRatioOptions = macrosRatioFields.map(
-		({ value, proteins, carbs, fats }, index) => {
+		({ value, proteinsRatio, carbsRatio, fatsRatio }, index) => {
 			return (
 				<MenuItem key={value} value={value}>
-					{`${proteins}% P, ${carbs}% C, ${fats}% F`}
+					{`${proteinsRatio}% P, ${carbsRatio}% C, ${fatsRatio}% F`}
 				</MenuItem>
 			);
 		}

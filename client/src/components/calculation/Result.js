@@ -21,7 +21,7 @@ class Result extends Component {
 			bulkingDailyCalories,
 			bulkingWeeklyCalories,
 
-			macrosRatio
+			macronutrient
 		} = this.props;
 
 		const dailyCaloriesList = [
@@ -50,9 +50,9 @@ class Result extends Component {
 		});
 
 		let macrosData = [
-			{ name: "Proteins", value: macrosRatio.proteins.ratio, color: "orange" },
-			{ name: "Carbs", value: macrosRatio.carbs.ratio, color: "red" },
-			{ name: "Fats", value: macrosRatio.fats.ratio, color: "green" }
+			{ ...macronutrient.proteins, color: "orange", name: "Proteins" },
+			{ ...macronutrient.carbs, color: "red", name: "Carbs" },
+			{ ...macronutrient.fats, color: "green", name: "Fats" }
 		];
 
 		const heightBigUnit = tabUnit === 0 ? "ft" : "m";

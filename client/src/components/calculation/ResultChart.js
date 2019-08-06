@@ -16,9 +16,9 @@ class ResultChart extends Component {
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if (
-			this.props.data[0].value !== prevProps.data[0].value ||
-			this.props.data[1].value !== prevProps.data[1].value ||
-			this.props.data[2].value !== prevProps.data[2].value
+			this.props.data[0].ratio !== prevProps.data[0].ratio ||
+			this.props.data[1].ratio !== prevProps.data[1].ratio ||
+			this.props.data[2].ratio !== prevProps.data[2].ratio
 		) {
 			this.setState((prevState, props) => {
 				return { data: props.data };
@@ -35,8 +35,6 @@ class ResultChart extends Component {
 		percent,
 		index
 	}) => {
-		const data = this.state.data;
-
 		const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
 		const x = cx + radius * Math.cos(-midAngle * this.RADIAN);
 		const y = cy + radius * Math.sin(-midAngle * this.RADIAN);
@@ -47,22 +45,26 @@ class ResultChart extends Component {
 				y={y}
 				fill="white"
 				textAnchor="middle"
-				dominantBaseline="baseline"
+				dominantBaseline="central"
 			>
-				<tspan x={x}>{`${data[index].name}`}</tspan>
-				<tspan x={x} dy="1.1em">{`${data[index].value}`}</tspan>
-				<tspan x={x} dy="1.1em">{`${data[index].value}`}</tspan>
+				<tspan x={x} dx="0.5em" dy="-1em" fontSize="smaller">{`${
+					this.state.data[index].name
+				}`}</tspan>
+				<tspan x={x} dx="0.5em" dy="1.1em" fontSize="smaller">
+					{`${this.state.data[index].grams}`} grams
+				</tspan>
+				<tspan x={x} dx="0.5em" dy="1.1em" fontSize="smaller">
+					{`${this.state.data[index].calories}`} calories
+				</tspan>
 			</text>
 		);
 	};
 
 	render() {
-		console.log("resultChart this.state.data", this.state.data);
-		console.log("resultChart this.props.data", this.props.data);
 		return (
 			<PieChart width={300} height={300}>
 				<Pie
-					dataKey="value"
+					dataKey="ratio"
 					data={this.state.data}
 					cx={150}
 					cy={150}
