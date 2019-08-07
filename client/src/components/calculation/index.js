@@ -29,11 +29,28 @@ class Calculation extends Component {
 			bulkingWeeklyCalories: 0,
 			activity: 1.2,
 			goal: 1,
-
 			macronutrient: {
-				proteins: { ratio: 40, calories: 0, grams: 0 },
-				carbs: { ratio: 30, calories: 0, grams: 0 },
-				fats: { ratio: 30, calories: 0, grams: 0 }
+				proteins: {
+					ratio: 40,
+					maintenanceCalories: 0,
+					maintenanceGrams: 0,
+					goalCalories: 0,
+					goalGrams: 0
+				},
+				carbs: {
+					ratio: 30,
+					maintenanceCalories: 0,
+					maintenanceGrams: 0,
+					goalCalories: 0,
+					goalGrams: 0
+				},
+				fats: {
+					ratio: 30,
+					maintenanceCalories: 0,
+					maintenanceGrams: 0,
+					goalCalories: 0,
+					goalGrams: 0
+				}
 			}
 		};
 	}
@@ -49,7 +66,7 @@ class Calculation extends Component {
 			goal,
 			macros
 		} = values;
-		//
+
 		const { proteinsRatio, carbsRatio, fatsRatio } = macrosRatioFields[macros];
 
 		const oneBigUnitToSmallUnit = this.state.tabUnit === 0 ? 12 : 10;
@@ -83,27 +100,58 @@ class Calculation extends Component {
 			activity
 		);
 
-		console.log("macros", macros);
-		const {
-			proteinsGrams,
-			carbsGrams,
-			fatsGrams
-		} = calcMethods.macronutrientInGrams(Number(cuttingDailyCalories), [
+		const goalDailyCalories =
+			goal === 0
+				? maintenanceDailyCalories
+				: goal === 1
+				? cuttingDailyCalories
+				: bulkingDailyCalories;
+
+		const [
+			maintenanceProteinsGrams,
+			maintenanceCarbsGrams,
+			maintenanceFatsGrams
+		] = calcMethods.macronutrientInGrams(Number(maintenanceDailyCalories), [
 			proteinsRatio,
 			carbsRatio,
 			fatsRatio
 		]);
-		const {
-			proteinsCalories,
-			carbsCalories,
-			fatsCalories
-		} = calcMethods.macronutrientInCalories(Number(cuttingDailyCalories), [
+		const [
+			maintenanceProteinsCalories,
+			maintenanceCarbsCalories,
+			maintenanceFatsCalories
+		] = calcMethods.macronutrientInCalories(Number(maintenanceDailyCalories), [
+			proteinsRatio,
+			carbsRatio,
+			fatsRatio
+		]);
+		const [
+			goalProteinsGrams,
+			goalCarbsGrams,
+			goalFatsGrams
+		] = calcMethods.macronutrientInGrams(Number(goalDailyCalories), [
+			proteinsRatio,
+			carbsRatio,
+			fatsRatio
+		]);
+		const [
+			goalProteinsCalories,
+			goalCarbsCalories,
+			goalFatsCalories
+		] = calcMethods.macronutrientInCalories(Number(goalDailyCalories), [
 			proteinsRatio,
 			carbsRatio,
 			fatsRatio
 		]);
 
 		const prevShowResult = this.state.showResult;
+		console.log("maintenanceProteinsCalories", maintenanceProteinsCalories);
+		console.log("maintenanceCarbsCalories", maintenanceCarbsCalories);
+		console.log("maintenanceFatsCalories", maintenanceFatsCalories);
+
+		console.log("goalProteinsCalories", goalProteinsCalories);
+		console.log("goalCarbsCalories", goalCarbsCalories);
+		console.log("goalFatsCalories", goalFatsCalories);
 
 		this.setState({
 			showResult: !prevShowResult,
@@ -125,21 +173,28 @@ class Calculation extends Component {
 			macronutrient: {
 				proteins: {
 					ratio: proteinsRatio,
-					calories: proteinsCalories,
-					grams: proteinsGrams
+					maintenanceCalories: maintenanceProteinsCalories,
+					maintenanceGrams: maintenanceProteinsGrams,
+					goalCalories: goalProteinsCalories,
+					goalGrams: goalProteinsGrams
 				},
 				carbs: {
 					ratio: carbsRatio,
-					calories: carbsCalories,
-					grams: carbsGrams
+					maintenanceCalories: maintenanceCarbsCalories,
+					maintenanceGrams: maintenanceCarbsGrams,
+					goalCalories: goalCarbsCalories,
+					goalGrams: goalCarbsGrams
 				},
 				fats: {
 					ratio: fatsRatio,
-					calories: fatsCalories,
-					grams: fatsGrams
+					maintenanceCalories: maintenanceFatsCalories,
+					maintenanceGrams: maintenanceFatsGrams,
+					goalCalories: goalFatsCalories,
+					goalGrams: goalFatsGrams
 				}
 			}
 		});
+		console.log("this.state", this.state);
 	};
 
 	handleTabChange = (event, value) => {

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Grid, Button, Typography, Paper, Box } from "@material-ui/core";
-import ResultCaloriesBox from "./ResultCaloriesBox";
 import * as actions from "../../actions";
-import ResultChart from "./ResultChart";
+
+import ResultRow from "./ResultRow";
 
 class Result extends Component {
 	render() {
@@ -20,39 +20,67 @@ class Result extends Component {
 			cuttingWeeklyCalories,
 			bulkingDailyCalories,
 			bulkingWeeklyCalories,
-
-			macronutrient
+			macronutrient,
+			goal
 		} = this.props;
 
-		const dailyCaloriesList = [
-			maintenanceDailyCalories,
-			cuttingDailyCalories,
-			bulkingDailyCalories
+		const goalLabel = goal === 1 ? "Cutting" : "Bulking";
+		const goalDailyCalories =
+			goal === 1 ? cuttingDailyCalories : bulkingDailyCalories;
+		const goalWeeklyCalories =
+			goal === 1 ? cuttingWeeklyCalories : bulkingWeeklyCalories;
+
+		const proteinsData = {
+			ratio: macronutrient.proteins.ratio,
+			color: "orange",
+			name: "Proteins"
+		};
+		const carbsData = {
+			ratio: macronutrient.carbs.ratio,
+			color: "red",
+			name: "Carbs"
+		};
+
+		const fatsData = {
+			ratio: macronutrient.fats.ratio,
+			color: "green",
+			name: "Fats"
+		};
+
+		let maintenanceMacrosData = [
+			{
+				calories: macronutrient.proteins.maintenanceCalories,
+				grams: macronutrient.proteins.maintenanceGrams,
+				...proteinsData
+			},
+			{
+				calories: macronutrient.carbs.maintenanceCalories,
+				grams: macronutrient.carbs.maintenanceGrams,
+				...carbsData
+			},
+			{
+				calories: macronutrient.fats.maintenanceCalories,
+				grams: macronutrient.fats.maintenanceGrams,
+				...fatsData
+			}
 		];
 
-		const weeklyCaloriesList = [
-			maintenanceWeeklyCalories,
-			cuttingWeeklyCalories,
-			bulkingWeeklyCalories
-		];
-
-		const phaseLabelList = ["Maintenance", "Cutting", "Bulking"];
-		const resultBoxes = phaseLabelList.map((label, index) => {
-			return (
-				<Grid item xs={4} key={index}>
-					<ResultCaloriesBox
-						label={label}
-						weeklyCalories={weeklyCaloriesList[index]}
-						dailyCalories={dailyCaloriesList[index]}
-					/>
-				</Grid>
-			);
-		});
-
-		let macrosData = [
-			{ ...macronutrient.proteins, color: "orange", name: "Proteins" },
-			{ ...macronutrient.carbs, color: "red", name: "Carbs" },
-			{ ...macronutrient.fats, color: "green", name: "Fats" }
+		let goalMacrosData = [
+			{
+				calories: macronutrient.proteins.goalCalories,
+				grams: macronutrient.proteins.goalGrams,
+				...proteinsData
+			},
+			{
+				calories: macronutrient.carbs.goalCalories,
+				grams: macronutrient.carbs.goalGrams,
+				...carbsData
+			},
+			{
+				calories: macronutrient.fats.goalCalories,
+				grams: macronutrient.fats.goalGrams,
+				...fatsData
+			}
 		];
 
 		const heightBigUnit = tabUnit === 0 ? "ft" : "m";
@@ -76,11 +104,26 @@ class Result extends Component {
 					</Typography>
 				</Box>
 				<Grid container justify="space-around" spacing={1}>
-					{resultBoxes}
+					<Grid item xs={6}>
+						<ResultRow
+							data={maintenanceMacrosData}
+							label="Maintenance"
+							weeklyCalories={maintenanceWeeklyCalories}
+							dailyCalories={maintenanceDailyCalories}
+						/>
+					</Grid>
+					<Grid item xs={6}>
+						{goal !== 0 && (
+							<ResultRow
+								data={goalMacrosData}
+								label={goalLabel}
+								weeklyCalories={goalWeeklyCalories}
+								dailyCalories={goalDailyCalories}
+							/>
+						)}
+					</Grid>
 				</Grid>
-				<Grid container justify="space-around" spacing={1}>
-					<ResultChart data={macrosData} />;
-				</Grid>
+
 				<Box align="center" p={2}>
 					<Button
 						label="button"

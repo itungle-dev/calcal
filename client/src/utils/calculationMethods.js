@@ -41,7 +41,7 @@ export const macronutrientInGrams = (
 	const carbsGrams = Math.round(((percentages[1] / 100) * totalCalories) / 4);
 	const fatsGrams = Math.round(((percentages[2] / 100) * totalCalories) / 9);
 
-	return { proteinsGrams, carbsGrams, fatsGrams };
+	return [proteinsGrams, carbsGrams, fatsGrams];
 };
 
 export const macronutrientInCalories = (
@@ -52,7 +52,7 @@ export const macronutrientInCalories = (
 	const carbsCalories = Math.round((percentages[1] / 100) * totalCalories);
 	const fatsCalories = Math.round((percentages[2] / 100) * totalCalories);
 
-	return { proteinsCalories, carbsCalories, fatsCalories };
+	return [proteinsCalories, carbsCalories, fatsCalories];
 };
 
 export const convertWeightToKilo = pound => {

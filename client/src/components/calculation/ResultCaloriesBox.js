@@ -1,17 +1,17 @@
 import React from "react";
-import { Box, Paper, Typography } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 
-const ResultCaloriesBox = ({ label, dailyCalories, weeklyCalories }) => {
+const ResultCaloriesBox = ({
+	label,
+	dailyCalories,
+	weeklyCalories,
+	macrosData
+}) => {
 	return (
-		<Box p={2} bgcolor="red">
-			<Paper square>
-				<Typography variant="h6">{label}</Typography>
-			</Paper>
-			<Paper square>
-				<Typography>{dailyCalories} Calories per day</Typography>
-				<Typography>{weeklyCalories} Calories per week</Typography>
-			</Paper>
-		</Box>
+		<div>
+			<Typography>{dailyCalories} Calories per day</Typography>
+			<Typography>{weeklyCalories} Calories per week</Typography>
+		</div>
 	);
 };
 

@@ -16,9 +16,12 @@ class ResultChart extends Component {
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if (
-			this.props.data[0].ratio !== prevProps.data[0].ratio ||
-			this.props.data[1].ratio !== prevProps.data[1].ratio ||
-			this.props.data[2].ratio !== prevProps.data[2].ratio
+			this.props.data[0].calories !== prevProps.data[0].calories ||
+			this.props.data[1].calories !== prevProps.data[1].calories ||
+			this.props.data[2].calories !== prevProps.data[2].calories ||
+			this.props.data[0].grams !== prevProps.data[0].grams ||
+			this.props.data[1].grams !== prevProps.data[1].grams ||
+			this.props.data[2].grams !== prevProps.data[2].grams
 		) {
 			this.setState((prevState, props) => {
 				return { data: props.data };
@@ -70,6 +73,7 @@ class ResultChart extends Component {
 					cy={150}
 					label={this.renderCustomizedLabel}
 					labelLine={false}
+					animationDuration={1000}
 				>
 					{this.state.data.map(field => {
 						return <Cell key={field.name} fill={field.color} />;
