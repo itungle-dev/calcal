@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { Grid } from "@material-ui/core";
 import UnitTabs from "./UnitTabs";
@@ -31,21 +32,21 @@ class Calculation extends Component {
 			goal: 1,
 			macronutrient: {
 				proteins: {
-					ratio: 40,
+					ratio: 35,
 					maintenanceCalories: 0,
 					maintenanceGrams: 0,
 					goalCalories: 0,
 					goalGrams: 0
 				},
 				carbs: {
-					ratio: 30,
+					ratio: 40,
 					maintenanceCalories: 0,
 					maintenanceGrams: 0,
 					goalCalories: 0,
 					goalGrams: 0
 				},
 				fats: {
-					ratio: 30,
+					ratio: 25,
 					maintenanceCalories: 0,
 					maintenanceGrams: 0,
 					goalCalories: 0,
@@ -66,7 +67,6 @@ class Calculation extends Component {
 			goal,
 			macros
 		} = values;
-
 		const { proteinsRatio, carbsRatio, fatsRatio } = macrosRatioFields[macros];
 
 		const oneBigUnitToSmallUnit = this.state.tabUnit === 0 ? 12 : 10;
@@ -144,57 +144,49 @@ class Calculation extends Component {
 			fatsRatio
 		]);
 
-		const prevShowResult = this.state.showResult;
-		console.log("maintenanceProteinsCalories", maintenanceProteinsCalories);
-		console.log("maintenanceCarbsCalories", maintenanceCarbsCalories);
-		console.log("maintenanceFatsCalories", maintenanceFatsCalories);
-
-		console.log("goalProteinsCalories", goalProteinsCalories);
-		console.log("goalCarbsCalories", goalCarbsCalories);
-		console.log("goalFatsCalories", goalFatsCalories);
-
-		this.setState({
-			showResult: !prevShowResult,
-			age: age,
-			gender: gender,
-			weight: weight,
-			heightBig: updatedHeightBig,
-			heightSmall: updatedHeightSmall,
-			weightInKilo: weightInKilo,
-			heightInCm: heightInCm,
-			maintenanceDailyCalories: maintenanceDailyCalories,
-			maintenanceWeeklyCalories: maintenanceWeeklyCalories,
-			cuttingDailyCalories: cuttingDailyCalories,
-			cuttingWeeklyCalories: cuttingWeeklyCalories,
-			bulkingDailyCalories: bulkingDailyCalories,
-			bulkingWeeklyCalories: bulkingWeeklyCalories,
-			goal: goal,
-			activity: activity,
-			macronutrient: {
-				proteins: {
-					ratio: proteinsRatio,
-					maintenanceCalories: maintenanceProteinsCalories,
-					maintenanceGrams: maintenanceProteinsGrams,
-					goalCalories: goalProteinsCalories,
-					goalGrams: goalProteinsGrams
-				},
-				carbs: {
-					ratio: carbsRatio,
-					maintenanceCalories: maintenanceCarbsCalories,
-					maintenanceGrams: maintenanceCarbsGrams,
-					goalCalories: goalCarbsCalories,
-					goalGrams: goalCarbsGrams
-				},
-				fats: {
-					ratio: fatsRatio,
-					maintenanceCalories: maintenanceFatsCalories,
-					maintenanceGrams: maintenanceFatsGrams,
-					goalCalories: goalFatsCalories,
-					goalGrams: goalFatsGrams
+		this.setState((prevState, props) => {
+			return {
+				showResult: !prevState.showResult,
+				age: age,
+				gender: gender,
+				weight: weight,
+				heightBig: updatedHeightBig,
+				heightSmall: updatedHeightSmall,
+				weightInKilo: weightInKilo,
+				heightInCm: heightInCm,
+				maintenanceDailyCalories: maintenanceDailyCalories,
+				maintenanceWeeklyCalories: maintenanceWeeklyCalories,
+				cuttingDailyCalories: cuttingDailyCalories,
+				cuttingWeeklyCalories: cuttingWeeklyCalories,
+				bulkingDailyCalories: bulkingDailyCalories,
+				bulkingWeeklyCalories: bulkingWeeklyCalories,
+				goal: goal,
+				activity: activity,
+				macronutrient: {
+					proteins: {
+						ratio: proteinsRatio,
+						maintenanceCalories: maintenanceProteinsCalories,
+						maintenanceGrams: maintenanceProteinsGrams,
+						goalCalories: goalProteinsCalories,
+						goalGrams: goalProteinsGrams
+					},
+					carbs: {
+						ratio: carbsRatio,
+						maintenanceCalories: maintenanceCarbsCalories,
+						maintenanceGrams: maintenanceCarbsGrams,
+						goalCalories: goalCarbsCalories,
+						goalGrams: goalCarbsGrams
+					},
+					fats: {
+						ratio: fatsRatio,
+						maintenanceCalories: maintenanceFatsCalories,
+						maintenanceGrams: maintenanceFatsGrams,
+						goalCalories: goalFatsCalories,
+						goalGrams: goalFatsGrams
+					}
 				}
-			}
+			};
 		});
-		console.log("this.state", this.state);
 	};
 
 	handleTabChange = (event, value) => {
@@ -233,6 +225,11 @@ class Calculation extends Component {
 		// this.state.showResult &&
 	}
 }
+function mapStateToProps(state, ownProps) {
+	return {};
+}
+Calculation = connect(mapStateToProps)(Calculation);
+
 export default reduxForm({
 	form: "calForm"
 })(Calculation);

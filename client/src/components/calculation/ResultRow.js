@@ -10,7 +10,7 @@ const ResultRow = ({ label, weeklyCalories, dailyCalories, data }) => {
 				<Typography variant="h6">{label}</Typography>
 			</Paper>
 			<Grid container justify="space-around" spacing={1} direction="column">
-				<Grid item xs={6}>
+				<Grid item>
 					<ResultCaloriesBox
 						label={label}
 						macrosData={data}
@@ -18,7 +18,7 @@ const ResultRow = ({ label, weeklyCalories, dailyCalories, data }) => {
 						dailyCalories={dailyCalories}
 					/>
 				</Grid>
-				<Grid item xs={6}>
+				<Grid item>
 					<ResultChart data={data} />
 				</Grid>
 			</Grid>

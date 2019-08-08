@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_USER } from "./types";
+import { FETCH_USER, SAVE_DETAILS } from "./types";
 
 // const fetchUser = () => {
 // 	return async dispatch => {
@@ -15,4 +15,5 @@ export const fetchUser = () => async dispatch => {
 
 export const saveDetails = details => async dispatch => {
 	console.log("action creator details", details);
+	dispatch({ type: SAVE_DETAILS, payload: details });
 };

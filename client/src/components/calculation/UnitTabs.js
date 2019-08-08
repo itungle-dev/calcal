@@ -11,8 +11,8 @@ const UnitTabs = ({ tabUnit, handleTabChange }) => {
 				textColor="primary"
 				centered
 			>
-				<Tab label="US Units" />
-				<Tab label="Metric Units" />
+				<Tab label="Imperial" />
+				<Tab label="Metric" />
 			</Tabs>
 		</Paper>
 	);

@@ -23,7 +23,6 @@ class Result extends Component {
 			macronutrient,
 			goal
 		} = this.props;
-
 		const goalLabel = goal === 1 ? "Cutting" : "Bulking";
 		const goalDailyCalories =
 			goal === 1 ? cuttingDailyCalories : bulkingDailyCalories;
@@ -86,9 +85,12 @@ class Result extends Component {
 		const heightBigUnit = tabUnit === 0 ? "ft" : "m";
 		const heightSmallUnit = tabUnit === 0 ? "in" : "cm";
 
-		const heightInput = heightBig
-			? `${heightBig} ${heightBigUnit} and ${heightSmall} ${heightSmallUnit}`
-			: `${heightSmall} ${heightSmallUnit}`;
+		const heightInput =
+			heightBig && Number(heightSmall) !== 0
+				? `${heightBig} ${heightBigUnit} and ${heightSmall} ${heightSmallUnit}`
+				: heightBig && Number(heightSmall) === 0
+				? `${heightBig} ${heightBigUnit}`
+				: `${heightSmall} ${heightSmallUnit}`;
 
 		const weightUnit = tabUnit === 0 ? `lbs` : `kgs`;
 
@@ -131,8 +133,20 @@ class Result extends Component {
 						color="primary"
 						onClick={() => {
 							const userDetails = {
-								age: this.props.age,
-								gender: this.props.gender
+								tabUnit,
+								age,
+								gender,
+								weight,
+								heightBig,
+								heightSmall,
+								maintenanceDailyCalories,
+								maintenanceWeeklyCalories,
+								cuttingDailyCalories,
+								cuttingWeeklyCalories,
+								bulkingDailyCalories,
+								bulkingWeeklyCalories,
+								macronutrient,
+								goal
 							};
 							return this.props.saveDetails(userDetails);
 						}}
@@ -145,13 +159,8 @@ class Result extends Component {
 	}
 }
 
-function mapStateToProps(ownProps) {
-	const age = ownProps.age;
-	const gender = ownProps.gender;
-	return {
-		age,
-		gender
-	};
+function mapStateToProps(state, ownProps) {
+	return {};
 }
 
 export default connect(
