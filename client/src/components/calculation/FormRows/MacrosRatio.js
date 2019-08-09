@@ -2,10 +2,10 @@ import React from "react";
 import { renderSelect } from "../renderInputs";
 import { Field } from "redux-form";
 import { MenuItem } from "@material-ui/core";
-import { macrosRatioFields } from "../data/selectFieldData";
+import { MACROS_RATIOS } from "../data/selectFieldData";
 
 const MacrosRatio = () => {
-	const macroRatioOptions = macrosRatioFields.map(
+	const macroRatioOptions = MACROS_RATIOS.map(
 		({ value, proteinsRatio, carbsRatio, fatsRatio }, index) => {
 			return (
 				<MenuItem key={value} value={value}>

@@ -1,27 +1,43 @@
 import React from "react";
 import ResultCaloriesBox from "./ResultCaloriesBox";
 import ResultChart from "./ResultChart";
-import { Grid, Box, Paper, Typography } from "@material-ui/core";
+import { Grid, Card, CardContent, Box, Typography } from "@material-ui/core";
 
-const ResultRow = ({ label, weeklyCalories, dailyCalories, data }) => {
+const ResultRow = ({
+	label,
+	weeklyCalories,
+	dailyCalories,
+	data,
+	hasGoal,
+	goalCalories
+}) => {
 	return (
 		<Box p={2}>
-			<Paper square elevation={0}>
-				<Typography variant="h6">{label}</Typography>
-			</Paper>
-			<Grid container justify="space-around" spacing={1} direction="column">
-				<Grid item>
-					<ResultCaloriesBox
-						label={label}
-						macrosData={data}
-						weeklyCalories={weeklyCalories}
-						dailyCalories={dailyCalories}
-					/>
+			<Card>
+				<CardContent>
+					<Typography variant="h6">{label}</Typography>
+				</CardContent>
+				<Grid
+					container
+					direction="row"
+					justify="flex-start"
+					alignItems="flex-start"
+				>
+					<Grid item>
+						<ResultCaloriesBox
+							label={label}
+							macrosData={data}
+							weeklyCalories={weeklyCalories}
+							dailyCalories={dailyCalories}
+							hasGoal={hasGoal}
+							goalCalories={goalCalories}
+						/>
+					</Grid>
+					<Grid item>
+						<ResultChart data={data} />
+					</Grid>
 				</Grid>
-				<Grid item>
-					<ResultChart data={data} />
-				</Grid>
-			</Grid>
+			</Card>
 		</Box>
 	);
 };

@@ -6,7 +6,7 @@ import UnitTabs from "./UnitTabs";
 import DetailForm from "./DetailForm";
 import Result from "./Result";
 import * as calcMethods from "../../utils/calculationMethods";
-import { macrosRatioFields } from "./data/selectFieldData";
+import { MACROS_RATIOS } from "./data/selectFieldData";
 
 class Calculation extends Component {
 	constructor(props) {
@@ -67,7 +67,7 @@ class Calculation extends Component {
 			goal,
 			macros
 		} = values;
-		const { proteinsRatio, carbsRatio, fatsRatio } = macrosRatioFields[macros];
+		const { proteinsRatio, carbsRatio, fatsRatio } = MACROS_RATIOS[macros];
 
 		const oneBigUnitToSmallUnit = this.state.tabUnit === 0 ? 12 : 10;
 

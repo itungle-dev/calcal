@@ -37,12 +37,12 @@ const ResultChart = ({ data, animation }) => {
 		);
 	};
 	return (
-		<PieChart width={300} height={300}>
+		<PieChart width={250} height={250}>
 			<Pie
 				dataKey="ratio"
 				data={data}
-				cx={150}
-				cy={150}
+				cx="50%"
+				cy="50%"
 				label={renderCustomizedLabel}
 				labelLine={false}
 				isAnimationActive={false}

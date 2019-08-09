@@ -96,7 +96,7 @@ class Result extends Component {
 
 		return (
 			<Paper square>
-				<Box bgcolor="green" p={1}>
+				<Box p={2}>
 					<Typography variant="h5">Result</Typography>
 				</Box>
 				<Box p={2}>
@@ -105,26 +105,23 @@ class Result extends Component {
 						{heightInput} tall
 					</Typography>
 				</Box>
-				<Grid container justify="space-around" spacing={1}>
-					<Grid item xs={6}>
-						<ResultRow
-							data={maintenanceMacrosData}
-							label="Maintenance"
-							weeklyCalories={maintenanceWeeklyCalories}
-							dailyCalories={maintenanceDailyCalories}
-						/>
-					</Grid>
-					<Grid item xs={6}>
-						{goal !== 0 && (
-							<ResultRow
-								data={goalMacrosData}
-								label={goalLabel}
-								weeklyCalories={goalWeeklyCalories}
-								dailyCalories={goalDailyCalories}
-							/>
-						)}
-					</Grid>
-				</Grid>
+				<ResultRow
+					data={maintenanceMacrosData}
+					label="Maintenance"
+					weeklyCalories={maintenanceWeeklyCalories}
+					dailyCalories={maintenanceDailyCalories}
+				/>
+
+				{goal !== 0 && (
+					<ResultRow
+						data={goalMacrosData}
+						label={goalLabel}
+						weeklyCalories={goalWeeklyCalories}
+						dailyCalories={goalDailyCalories}
+						hasGoal={goal}
+						goalCalories={250}
+					/>
+				)}
 
 				<Box align="center" p={2}>
 					<Button
