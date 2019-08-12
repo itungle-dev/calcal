@@ -3,14 +3,7 @@ import ResultCaloriesBox from "./ResultCaloriesBox";
 import ResultChart from "./ResultChart";
 import { Grid, Card, CardContent, Box, Typography } from "@material-ui/core";
 
-const ResultRow = ({
-	label,
-	weeklyCalories,
-	dailyCalories,
-	data,
-	hasGoal,
-	goalCalories
-}) => {
+const ResultRow = ({ label, weeklyCalories, dailyCalories, data, hasGoal }) => {
 	return (
 		<Box p={2}>
 			<Card>
@@ -30,7 +23,6 @@ const ResultRow = ({
 							weeklyCalories={weeklyCalories}
 							dailyCalories={dailyCalories}
 							hasGoal={hasGoal}
-							goalCalories={goalCalories}
 						/>
 					</Grid>
 					<Grid item>

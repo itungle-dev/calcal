@@ -119,7 +119,6 @@ class Result extends Component {
 						weeklyCalories={goalWeeklyCalories}
 						dailyCalories={goalDailyCalories}
 						hasGoal={goal}
-						goalCalories={250}
 					/>
 				)}
 

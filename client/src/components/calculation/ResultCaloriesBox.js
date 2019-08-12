@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { CardContent, Typography, makeStyles } from "@material-ui/core";
-
+import { GOAL_RATE } from "./data/selectFieldData";
 const ResultCaloriesBox = ({
 	label,
 	dailyCalories,
@@ -23,6 +23,7 @@ const ResultCaloriesBox = ({
 	});
 
 	const classes = useStyles();
+
 	
 	return (
 		<Fragment>

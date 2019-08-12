@@ -9,11 +9,14 @@ import Height from "./FormRows/Height";
 import Goal from "./FormRows/Goal";
 import ActivityLevel from "./FormRows/ActivityLevel";
 import MacrosRatio from "./FormRows/MacrosRatio";
+import GoalPace from "./FormRows/GoalPace";
+
+import { GOAL_PACE } from "./data/selectFieldData";
 
 class DetailForm extends Component {
 	constructor(props) {
 		super(props);
-		this.props.initialize({ activity: 1.2, goal: 0, macros: 0 });
+		this.props.initialize({ activity: 1.2, goal: 0, macros: 0, goalPace: 3 });
 	}
 
 	renderForms = tabIndex => {
@@ -41,8 +44,9 @@ class DetailForm extends Component {
 			"Gender",
 			"Weight",
 			"Height",
-			"Activity level",
+			"Activity Level",
 			"Goal",
+			"Goal Pace",
 			"Macronutrients Ratio"
 		];
 		const validateAge = [isRequired, isNumber, isAgeInRange];
@@ -60,6 +64,7 @@ class DetailForm extends Component {
 			/>,
 			<ActivityLevel />,
 			<Goal />,
+			<GoalPace unit={tabIndex} />,
 			<MacrosRatio />
 		];
 		const fieldRows = fieldsList.map((field, index) => {
