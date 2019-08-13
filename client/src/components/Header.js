@@ -1,7 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Link } from "@material-ui/core";
+import {
+	AppBar,
+	Toolbar,
+	Typography,
+	Link,
+	IconButton
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
 
 class Header extends Component {
 	renderDynamicHeader() {
@@ -36,6 +43,9 @@ class Header extends Component {
 			<Fragment>
 				<AppBar position="static" color="default" elevation={0}>
 					<Toolbar style={{ flexWrap: "wrap" }}>
+						<IconButton edge="start" color="inherit" aria-label="menu">
+							<MenuIcon />
+						</IconButton>
 						<Typography variant="h5" color="inherit" style={{}}>
 							CalCal
 						</Typography>

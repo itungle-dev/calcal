@@ -4,12 +4,16 @@ import { Field } from "redux-form";
 import { MenuItem } from "@material-ui/core";
 import { GOAL_PACE } from "../data/selectFieldData";
 
-const GoalPace = ({ unit }) => {
+const GoalPace = ({ unit, goal }) => {
 	const rateOptions = GOAL_PACE.map(
-		({ label, value, calories, imperial, metric }, index) => {
+		(
+			{ label, value, dailyCalories, weeklyCalories, imperial, metric },
+			index
+		) => {
 			return (
 				<MenuItem key={value} value={value}>
-					{label} ( &#x00B1; {calories} calories/
+					{label} ( {goal === 1 ? "-" : "+"}
+					{dailyCalories} calories/
 					{unit === 0
 						? `${imperial} ${imperial === 1 ? "lb" : "lbs"}`
 						: `${metric} ${metric === 1 ? "kg" : "kgs"}`}

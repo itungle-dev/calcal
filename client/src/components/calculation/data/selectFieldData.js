@@ -10,10 +10,30 @@ export const MACROS_RATIOS = [
 ];
 
 export const GOAL_PACE = [
-	{ value: 0, label: "Normal", calories: 250, imperial: 0.5, metric: 0.25 },
-	{ value: 1, label: "Faster", calories: 500, imperial: 1, metric: 0.5 },
-	{ value: 2, label: "Extreme", calories: 1000, imperial: 2, metric: 1 },
-	{ value: 3, label: "None", calories: 0, imperial: 0, metric: 0 }
+	{
+		value: 0,
+		label: "Normal",
+		dailyCalories: 250,
+		weeklyCalories: 1750,
+		imperial: 0.5,
+		metric: 0.25
+	},
+	{
+		value: 1,
+		label: "Faster",
+		dailyCalories: 500,
+		weeklyCalories: 3500,
+		imperial: 1,
+		metric: 0.5
+	},
+	{
+		value: 2,
+		label: "Extreme",
+		dailyCalories: 1000,
+		weeklyCalories: 7000,
+		imperial: 2,
+		metric: 1
+	}
 ];
 
 export const GOAL_LABELS = [

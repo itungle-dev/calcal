@@ -30,6 +30,7 @@ class Calculation extends Component {
 			bulkingWeeklyCalories: 0,
 			activity: 1.2,
 			goal: 1,
+			goalPace: 0,
 			macronutrient: {
 				proteins: {
 					ratio: 35,
@@ -65,6 +66,7 @@ class Calculation extends Component {
 			heightSmall,
 			activity,
 			goal,
+			goalPace,
 			macros
 		} = values;
 		const { proteinsRatio, carbsRatio, fatsRatio } = MACROS_RATIOS[macros];
@@ -161,6 +163,7 @@ class Calculation extends Component {
 				bulkingDailyCalories: bulkingDailyCalories,
 				bulkingWeeklyCalories: bulkingWeeklyCalories,
 				goal: goal,
+				goalPace: goalPace,
 				activity: activity,
 				macronutrient: {
 					proteins: {

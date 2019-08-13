@@ -11,13 +11,20 @@ import ActivityLevel from "./FormRows/ActivityLevel";
 import MacrosRatio from "./FormRows/MacrosRatio";
 import GoalPace from "./FormRows/GoalPace";
 
-import { GOAL_PACE } from "./data/selectFieldData";
-
 class DetailForm extends Component {
 	constructor(props) {
 		super(props);
-		this.props.initialize({ activity: 1.2, goal: 0, macros: 0, goalPace: 3 });
+		this.state = {
+			goal: 0
+		};
+		this.props.initialize({ activity: 1.2, goal: 0, macros: 0, goalPace: 0 });
 	}
+
+	handleGoalChange = (event, value) => {
+		this.setState({
+			goal: value
+		});
+	};
 
 	renderForms = tabIndex => {
 		const gridContainerProps = {
@@ -45,9 +52,8 @@ class DetailForm extends Component {
 			"Weight",
 			"Height",
 			"Activity Level",
-			"Goal",
-			"Goal Pace",
-			"Macronutrients Ratio"
+			"Macronutrients Ratio",
+			"Goal"
 		];
 		const validateAge = [isRequired, isNumber, isAgeInRange];
 		const validateWeight = [isRequired, isNumber, isWeightInRange];
@@ -63,9 +69,8 @@ class DetailForm extends Component {
 				validateSmallUnit={validateNum}
 			/>,
 			<ActivityLevel />,
-			<Goal />,
-			<GoalPace unit={tabIndex} />,
-			<MacrosRatio />
+			<MacrosRatio />,
+			<Goal handleGoalChange={this.handleGoalChange} />
 		];
 		const fieldRows = fieldsList.map((field, index) => {
 			const labelTypograph = (
@@ -82,12 +87,20 @@ class DetailForm extends Component {
 				/>
 			);
 		});
-
 		return (
 			<Paper square>
 				<form onSubmit={handleSubmit}>
 					<Box p={2}>
 						{fieldRows}
+						{this.state.goal > 0 && (
+							<FieldRow
+								label={<Typography align="right">Goal Pace</Typography>}
+								field={<GoalPace unit={tabIndex} goal={this.state.goal} />}
+								containerProps={gridContainerProps}
+								itemLabelProps={gridItemLabelProps}
+								itemFieldProps={gridItemFieldProps}
+							/>
+						)}
 
 						<Grid
 							container

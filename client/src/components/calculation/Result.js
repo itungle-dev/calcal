@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Grid, Button, Typography, Paper, Box } from "@material-ui/core";
+import { Button, Typography, Paper, Box } from "@material-ui/core";
 import * as actions from "../../actions";
 
 import ResultRow from "./ResultRow";
@@ -21,7 +21,8 @@ class Result extends Component {
 			bulkingDailyCalories,
 			bulkingWeeklyCalories,
 			macronutrient,
-			goal
+			goal,
+			goalPace
 		} = this.props;
 		const goalLabel = goal === 1 ? "Cutting" : "Bulking";
 		const goalDailyCalories =
@@ -118,7 +119,8 @@ class Result extends Component {
 						label={goalLabel}
 						weeklyCalories={goalWeeklyCalories}
 						dailyCalories={goalDailyCalories}
-						hasGoal={goal}
+						goal={goal}
+						goalPace={goalPace}
 					/>
 				)}
 
@@ -142,7 +144,8 @@ class Result extends Component {
 								bulkingDailyCalories,
 								bulkingWeeklyCalories,
 								macronutrient,
-								goal
+								goal,
+								goalPace
 							};
 							return this.props.saveDetails(userDetails);
 						}}
