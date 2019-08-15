@@ -18,8 +18,8 @@ class Calculation extends Component {
 			age: 0,
 			gender: "",
 			weight: 0,
-			heightBig: 0,
-			heightSmall: 0,
+			heightFt: 0,
+			heightIn: 0,
 			weightInKilo: 0,
 			heightInCm: 0,
 			maintenanceDailyCalories: 0,
@@ -62,30 +62,33 @@ class Calculation extends Component {
 			age,
 			gender,
 			weight,
-			heightBig,
-			heightSmall,
+			heightFt,
+			heightIn,
+			heightCm,
 			activity,
 			goal,
 			goalPace,
 			macros
 		} = values;
+
+		console.log("index.js values", values);
+
 		const { proteinsRatio, carbsRatio, fatsRatio } = MACROS_RATIOS[macros];
 
-		const oneBigUnitToSmallUnit = this.state.tabUnit === 0 ? 12 : 10;
-
-		const updatedHeightBig =
-			Number(heightBig) + Math.floor(heightSmall / oneBigUnitToSmallUnit);
-		const updatedHeightSmall = Number(heightSmall) % oneBigUnitToSmallUnit;
+		const [updatedHeightFt, updatedHeightIn] = calcMethods.updateFeetAndInches(
+			heightFt,
+			heightIn
+		);
 
 		const weightInKilo =
 			this.state.tabUnit === 0
 				? calcMethods.convertWeightToKilo(weight)
-				: parseInt(weight);
+				: Math.round(Number(weight));
 
 		const heightInCm =
 			this.state.tabUnit === 0
-				? calcMethods.convertHeightToCm(heightBig, heightSmall)
-				: Number(heightBig) * 10 + Number(heightSmall);
+				? calcMethods.convertHeightToCm(updatedHeightFt, updatedHeightIn)
+				: Math.round(Number(heightCm));
 
 		const {
 			maintenanceDailyCalories,
@@ -101,7 +104,6 @@ class Calculation extends Component {
 			heightInCm,
 			activity
 		);
-
 		const goalDailyCalories =
 			goal === 0
 				? maintenanceDailyCalories
@@ -152,8 +154,8 @@ class Calculation extends Component {
 				age: age,
 				gender: gender,
 				weight: weight,
-				heightBig: updatedHeightBig,
-				heightSmall: updatedHeightSmall,
+				heightFt: updatedHeightFt,
+				heightIn: updatedHeightIn,
 				weightInKilo: weightInKilo,
 				heightInCm: heightInCm,
 				maintenanceDailyCalories: maintenanceDailyCalories,

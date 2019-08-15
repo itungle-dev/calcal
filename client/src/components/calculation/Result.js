@@ -12,8 +12,9 @@ class Result extends Component {
 			age,
 			gender,
 			weight,
-			heightBig,
-			heightSmall,
+			heightFt,
+			heightIn,
+			heightCm,
 			maintenanceDailyCalories,
 			maintenanceWeeklyCalories,
 			cuttingDailyCalories,
@@ -83,15 +84,14 @@ class Result extends Component {
 			}
 		];
 
-		const heightBigUnit = tabUnit === 0 ? "ft" : "m";
-		const heightSmallUnit = tabUnit === 0 ? "in" : "cm";
-
 		const heightInput =
-			heightBig && Number(heightSmall) !== 0
-				? `${heightBig} ${heightBigUnit} and ${heightSmall} ${heightSmallUnit}`
-				: heightBig && Number(heightSmall) === 0
-				? `${heightBig} ${heightBigUnit}`
-				: `${heightSmall} ${heightSmallUnit}`;
+			tabUnit === 1
+				? `${heightCm} cm`
+				: heightFt
+				? Number(heightIn) !== 0
+					? `${heightFt} ft and ${heightIn} in`
+					: `${heightFt} ft`
+				: `${heightIn} in`;
 
 		const weightUnit = tabUnit === 0 ? `lbs` : `kgs`;
 
@@ -135,8 +135,9 @@ class Result extends Component {
 								age,
 								gender,
 								weight,
-								heightBig,
-								heightSmall,
+								heightFt,
+								heightIn,
+								heightCm,
 								maintenanceDailyCalories,
 								maintenanceWeeklyCalories,
 								cuttingDailyCalories,

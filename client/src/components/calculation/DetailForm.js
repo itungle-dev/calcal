@@ -161,8 +161,9 @@ const validate = (values, props) => {
 		"age",
 		"gender",
 		"weight",
-		"heightBig",
-		"heightSmall"
+		"heightFt",
+		"heightIn",
+		"heightCm"
 	];
 
 	requiredFields.forEach(field => {
@@ -175,8 +176,8 @@ const validate = (values, props) => {
 		if (!values[field]) {
 			if (
 				!(
-					(field === "heightSmall" && values["heightBig"]) ||
-					(field === "heightBig" && values["heightSmall"])
+					(field === "heightIn" && values["heightFt"]) ||
+					(field === "heightFt" && values["heightIn"])
 				)
 			) {
 				errors[field] = "Required";

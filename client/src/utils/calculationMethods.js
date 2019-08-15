@@ -63,11 +63,25 @@ export const convertWeightToKilo = pound => {
 	return weightInKilo;
 };
 
-export const convertHeightToCm = (inches, feet = 0) => {
+export const convertHeightToCm = (feet = 0, inches = 0) => {
 	const INCH_IN_CM = 2.54;
 	const heightInInches = Number(feet) * 12 + Number(inches);
 
 	const heightInCm = Math.round(heightInInches * INCH_IN_CM);
 
 	return heightInCm;
+};
+
+export const updateFeetAndInches = (feet, inches) => {
+	const INCHES_TO_FEET = 12;
+	feet = Number(feet);
+	inches = Number(inches);
+
+	const floorFt = Math.floor(feet);
+	const leftOverDecimalFt = feet - floorFt;
+	let updatedInches = leftOverDecimalFt * 12 + inches;
+
+	let updatedFeet = floorFt + Math.floor(updatedInches / INCHES_TO_FEET);
+	updatedInches = Math.round(updatedInches % INCHES_TO_FEET);
+	return [updatedFeet, updatedInches];
 };
