@@ -4,8 +4,7 @@ export const mifflinEquation = (
 	weight,
 	height,
 	activity = 1.2,
-	cutCalories = 250,
-	bulkCalories = 250
+	caloriesPace = 250
 ) => {
 	const genderNum = gender === "male" ? 5 : -161;
 
@@ -14,8 +13,8 @@ export const mifflinEquation = (
 
 	const maintenanceDailyCalories = Math.round(basalMetabolicRate * activity);
 
-	const cuttingCalories = maintenanceDailyCalories - cutCalories;
-	const bulkingCalories = maintenanceDailyCalories + bulkCalories;
+	const cuttingCalories = maintenanceDailyCalories - caloriesPace;
+	const bulkingCalories = maintenanceDailyCalories + caloriesPace;
 
 	const calculatedCalories = {
 		basalMetabolicRate: basalMetabolicRate,
@@ -55,7 +54,17 @@ export const macronutrientInCalories = (
 	return [proteinsCalories, carbsCalories, fatsCalories];
 };
 
+export const convertWeightToPound = kilo => {
+	kilo = Number(kilo);
+	const KG_IN_LB = 2.20462262;
+
+	const weightInPound = Math.round(kilo * KG_IN_LB);
+
+	return weightInPound;
+};
+
 export const convertWeightToKilo = pound => {
+	pound = Number(pound);
 	const KG_IN_LB = 2.20462262;
 
 	const weightInKilo = Math.round(pound / KG_IN_LB);
@@ -70,6 +79,13 @@ export const convertHeightToCm = (feet = 0, inches = 0) => {
 	const heightInCm = Math.round(heightInInches * INCH_IN_CM);
 
 	return heightInCm;
+};
+export const convertHeightMetricToImperial = (cm = 0) => {
+	const INCH_IN_CM = 2.54;
+	const totalInches = Math.round(Number(cm) / INCH_IN_CM);
+	const feet = Math.floor(totalInches / 12);
+	const inches = Math.round(totalInches % 12);
+	return [feet, inches];
 };
 
 export const updateFeetAndInches = (feet, inches) => {

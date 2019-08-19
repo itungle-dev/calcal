@@ -37,18 +37,16 @@ const Height = ({ unit, validateBigUnit, validateSmallUnit }) => {
 	} else {
 		height = (
 			<Fragment>
-				<Grid item>
-					<Field
-						style={{ marginRight: 2.5 }}
-						name="heightCm"
-						component={renderField}
-						variant="outlined"
-						validate={validateBigUnit}
-						InputProps={{
-							endAdornment: <InputAdornment position="end">cm</InputAdornment>
-						}}
-					/>
-				</Grid>
+				<Field
+					name="heightCm"
+					component={renderField}
+					fullWidth
+					variant="outlined"
+					validate={validateBigUnit}
+					InputProps={{
+						endAdornment: <InputAdornment position="end">cm</InputAdornment>
+					}}
+				/>
 			</Fragment>
 		);
 	}

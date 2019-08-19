@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import { reduxForm, change } from "redux-form";
 import { Paper, Grid, Box, Typography, Button } from "@material-ui/core";
 import FieldRow from "./FieldRow";
 import Age from "./FormRows/Age";
@@ -10,6 +11,7 @@ import Goal from "./FormRows/Goal";
 import ActivityLevel from "./FormRows/ActivityLevel";
 import MacrosRatio from "./FormRows/MacrosRatio";
 import GoalPace from "./FormRows/GoalPace";
+import * as calcMethods from "../../utils/calculationMethods";
 
 class DetailForm extends Component {
 	constructor(props) {
@@ -17,8 +19,50 @@ class DetailForm extends Component {
 		this.state = {
 			goal: 0
 		};
-		this.props.initialize({ activity: 1.2, goal: 0, macros: 0, goalPace: 0 });
+		this.props.initialize({
+			activity: 1.2,
+			goal: 0,
+			macros: 0,
+			goalPace: 0,
+			gender: "female"
+		});
 	}
+
+	componentDidUpdate = (prevProps, prevState) => {
+		if (prevProps.tabUnit !== this.props.tabUnit) {
+			const { change, tabUnit } = this.props;
+			const { weight, heightFt, heightIn, heightCm } = this.props.formValues;
+
+			// tabUnit === 0, then number need to convert to IMPERIAL.
+			// tabUnit === 1, then number needs to convert to METRIC.
+			if (weight) {
+				const weightConverted =
+					tabUnit === 0
+						? calcMethods.convertWeightToPound(weight)
+						: calcMethods.convertWeightToKilo(weight);
+				change("calForm", "weight", weightConverted);
+			}
+
+			if (tabUnit === 0) {
+				if (heightCm) {
+					const [
+						heightConvertedFt,
+						heightConvertedIn
+					] = calcMethods.convertHeightMetricToImperial(heightCm);
+					change("calForm", "heightFt", heightConvertedFt);
+					change("calForm", "heightIn", heightConvertedIn);
+				}
+			} else {
+				if (heightFt || heightIn) {
+					const heightConvertedCm = calcMethods.convertHeightToCm(
+						heightFt,
+						heightIn
+					);
+					change("calForm", "heightCm", heightConvertedCm);
+				}
+			}
+		}
+	};
 
 	handleGoalChange = (event, value) => {
 		this.setState({
@@ -52,11 +96,11 @@ class DetailForm extends Component {
 			"Weight",
 			"Height",
 			"Activity Level",
-			"Macronutrients Ratio",
+			"Macros Ratio",
 			"Goal"
 		];
 		const validateAge = [isRequired, isNumber, isAgeInRange];
-		const validateWeight = [isRequired, isNumber, isWeightInRange];
+		const validateWeight = [isRequired, isNumber];
 		const validateNum = [isNumber];
 
 		const fieldsList = [
@@ -153,9 +197,10 @@ const isNumInRange = (value, low = 0, high = Number.POSITIVE_INFINITY) => {
 };
 
 const isAgeInRange = value => isNumInRange(value, 13, 90);
-const isWeightInRange = value => isNumInRange(value, 20);
+// const isWeightInRange = value => isNumInRange(value, 1);
 
 const validate = (values, props) => {
+	const { tabUnit } = props;
 	let errors = {};
 	const requiredFields = [
 		"age",
@@ -165,6 +210,18 @@ const validate = (values, props) => {
 		"heightIn",
 		"heightCm"
 	];
+
+	if (values["weight"]) {
+		if (tabUnit === 0) {
+			if (!(Number(values["weight"]) > 20)) {
+				errors["weight"] = "Must be a number greater than or equal to 20";
+			}
+		} else {
+			if (!(Number(values["weight"]) > 10)) {
+				errors["weight"] = "Must be a number greater than or equal to 10";
+			}
+		}
+	}
 
 	requiredFields.forEach(field => {
 		if (field !== "gender" && values[field]) {
@@ -187,6 +244,18 @@ const validate = (values, props) => {
 
 	return errors;
 };
+function mapStateToProps(state) {
+	return {
+		formValues: state.form.calForm.values
+	};
+}
+const mapDispatchToProps = {
+	change
+};
+DetailForm = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(DetailForm);
 
 export default reduxForm({
 	form: "calForm",
