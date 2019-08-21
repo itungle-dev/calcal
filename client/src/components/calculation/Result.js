@@ -25,10 +25,13 @@ class Result extends Component {
 
 		const { proteinsRatio, carbsRatio, fatsRatio } = MACROS_RATIOS[macros];
 
-		const [updatedHeightFt, updatedHeightIn] = calcMethods.updateFeetAndInches(
+		const updatedHeightImperial = calcMethods.updateFeetAndInches(
 			heightFt,
 			heightIn
 		);
+		const updatedHeightFt = updatedHeightImperial.updatedFeet;
+		const updatedHeightIn = updatedHeightImperial.updatedInches;
+
 		const weightInKilo =
 			tabUnit === 0
 				? calcMethods.convertWeightToKilo(weight)
@@ -54,6 +57,7 @@ class Result extends Component {
 			activity,
 			GOAL_PACE[goalPace].dailyCalories
 		);
+
 		const goalDailyCalories =
 			goal === 0
 				? maintenanceDailyCalories
@@ -66,65 +70,45 @@ class Result extends Component {
 				: goal === 1
 				? cuttingWeeklyCalories
 				: bulkingWeeklyCalories;
+		const maintenanceMacroInCalories = calcMethods.macronutrientInCalories(
+			Number(maintenanceDailyCalories),
+			[proteinsRatio, carbsRatio, fatsRatio]
+		);
+		const maintenanceMacroInGrams = calcMethods.macronutrientInGrams(
+			Number(maintenanceDailyCalories),
+			[proteinsRatio, carbsRatio, fatsRatio]
+		);
 
-		const [
-			maintenanceProteinsGrams,
-			maintenanceCarbsGrams,
-			maintenanceFatsGrams
-		] = calcMethods.macronutrientInGrams(Number(maintenanceDailyCalories), [
-			proteinsRatio,
-			carbsRatio,
-			fatsRatio
-		]);
-		const [
-			maintenanceProteinsCalories,
-			maintenanceCarbsCalories,
-			maintenanceFatsCalories
-		] = calcMethods.macronutrientInCalories(Number(maintenanceDailyCalories), [
-			proteinsRatio,
-			carbsRatio,
-			fatsRatio
-		]);
-		const [
-			goalProteinsGrams,
-			goalCarbsGrams,
-			goalFatsGrams
-		] = calcMethods.macronutrientInGrams(Number(goalDailyCalories), [
-			proteinsRatio,
-			carbsRatio,
-			fatsRatio
-		]);
-		const [
-			goalProteinsCalories,
-			goalCarbsCalories,
-			goalFatsCalories
-		] = calcMethods.macronutrientInCalories(Number(goalDailyCalories), [
-			proteinsRatio,
-			carbsRatio,
-			fatsRatio
-		]);
+		const goalMacroInGrams = calcMethods.macronutrientInGrams(
+			Number(goalDailyCalories),
+			[proteinsRatio, carbsRatio, fatsRatio]
+		);
+		const goalMacroInCalories = calcMethods.macronutrientInCalories(
+			Number(goalDailyCalories),
+			[proteinsRatio, carbsRatio, fatsRatio]
+		);
 
 		const macrosInfo = {
 			proteins: {
 				ratio: proteinsRatio,
-				maintenanceCalories: maintenanceProteinsCalories,
-				maintenanceGrams: maintenanceProteinsGrams,
-				goalCalories: goalProteinsCalories,
-				goalGrams: goalProteinsGrams
+				maintenanceCalories: maintenanceMacroInCalories.proteinsCalories,
+				maintenanceGrams: maintenanceMacroInGrams.proteinsGrams,
+				goalCalories: goalMacroInCalories.proteinsCalories,
+				goalGrams: goalMacroInGrams.proteinsGrams
 			},
 			carbs: {
 				ratio: carbsRatio,
-				maintenanceCalories: maintenanceCarbsCalories,
-				maintenanceGrams: maintenanceCarbsGrams,
-				goalCalories: goalCarbsCalories,
-				goalGrams: goalCarbsGrams
+				maintenanceCalories: maintenanceMacroInCalories.carbsCalories,
+				maintenanceGrams: maintenanceMacroInGrams.carbsGrams,
+				goalCalories: goalMacroInCalories.carbsCalories,
+				goalGrams: goalMacroInGrams.carbsGrams
 			},
 			fats: {
 				ratio: fatsRatio,
-				maintenanceCalories: maintenanceFatsCalories,
-				maintenanceGrams: maintenanceFatsGrams,
-				goalCalories: goalFatsCalories,
-				goalGrams: goalFatsGrams
+				maintenanceCalories: maintenanceMacroInCalories.fatsCalories,
+				maintenanceGrams: maintenanceMacroInGrams.fatsGrams,
+				goalCalories: goalMacroInCalories.fatsCalories,
+				goalGrams: goalMacroInGrams.fatsGrams
 			}
 		};
 
@@ -228,27 +212,20 @@ class Result extends Component {
 						variant="outlined"
 						color="primary"
 						onClick={() => {
-							// const userDetails = {
-							// 	tabUnit,
-							// 	age,
-							// 	gender,
-							// 	weight,
-							// 	heightFt,
-							// 	heightIn,
-							// 	heightInCm,
-							// 	weightInKilo,
-							// 	maintenanceDailyCalories,
-							// 	maintenanceWeeklyCalories,
-							// 	cuttingDailyCalories,
-							// 	cuttingWeeklyCalories,
-							// 	bulkingDailyCalories,
-							// 	bulkingWeeklyCalories,
-							// 	macronutrient,
-							// 	goal,
-							// 	goalPace
-							// };
-							// console.log("userDetails", userDetails);
-							// return this.props.saveDetails(userDetails);
+							const userProfile = {
+								unit: tabUnit,
+								age,
+								gender,
+								weight,
+								goal,
+								goalPace,
+								macros,
+								activity,
+								proteinsRatio,
+								carbsRatio,
+								fatsRatio
+							};
+							return this.props.saveUserInfo(userProfile);
 						}}
 					>
 						Save

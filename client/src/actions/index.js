@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_USER, SAVE_DETAILS } from "./types";
+import { FETCH_USER, SAVE_USER_INFO } from "./types";
 
 // const fetchUser = () => {
 // 	return async dispatch => {
@@ -13,7 +13,11 @@ export const fetchUser = () => async dispatch => {
 	dispatch({ type: FETCH_USER, payload: res.data });
 };
 
-export const saveDetails = details => async dispatch => {
-	console.log("action creator details", details);
-	dispatch({ type: SAVE_DETAILS, payload: details });
+export const saveUserInfo = values => async dispatch => {
+	console.log("action creator details", values);
+	const res = await axios.post("/api/user/save", values);
+
+	console.log("res in action index", res);
+
+	dispatch({ type: SAVE_USER_INFO, payload: res.data });
 };

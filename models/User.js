@@ -16,6 +16,37 @@ const userSchema = new Schema({
 	},
 	age: {
 		type: Number
+	},
+	gender: {
+		type: String
+	},
+	weight: {
+		imperial: {},
+		metric: {}
+	},
+	height: {
+		imperial: {},
+		metric: {}
+	},
+	goal: {
+		type: String
+	},
+	goalPace: {
+		type: String
+	},
+	activity: {
+		type: Number
+	},
+	macrosRatio: {
+		proteins: {
+			type: Number
+		},
+		carbs: {
+			type: Number
+		},
+		fats: {
+			type: Number
+		}
 	}
 });
 

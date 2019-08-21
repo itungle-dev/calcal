@@ -45,12 +45,11 @@ class DetailForm extends Component {
 
 			if (tabUnit === 0) {
 				if (heightCm) {
-					const [
-						heightConvertedFt,
-						heightConvertedIn
-					] = calcMethods.convertHeightMetricToImperial(heightCm);
-					change("calForm", "heightFt", heightConvertedFt);
-					change("calForm", "heightIn", heightConvertedIn);
+					const heightConvertedToImperial = calcMethods.convertHeightMetricToImperial(
+						heightCm
+					);
+					change("calForm", "heightFt", heightConvertedToImperial.feet);
+					change("calForm", "heightIn", heightConvertedToImperial.inches);
 				}
 			} else {
 				if (heightFt || heightIn) {
@@ -213,12 +212,14 @@ const validate = (values, props) => {
 
 	if (values["weight"]) {
 		if (tabUnit === 0) {
-			if (!(Number(values["weight"]) > 20)) {
-				errors["weight"] = "Must be a number greater than or equal to 20";
+			if (
+				!(Number(values["weight"]) >= 20 && Number(values["weight"]) <= 2000)
+			) {
+				errors["weight"] = "Must be a number between 20 and 2000";
 			}
 		} else {
-			if (!(Number(values["weight"]) > 10)) {
-				errors["weight"] = "Must be a number greater than or equal to 10";
+			if (!(Number(values["weight"]) > 10 && Number(values["weight"]) <= 907)) {
+				errors["weight"] = "Must be a number between 10 and 907";
 			}
 		}
 	}
@@ -259,6 +260,5 @@ DetailForm = connect(
 
 export default reduxForm({
 	form: "calForm",
-	validate: validate,
-	destroyOnUnmount: false
+	validate: validate
 })(DetailForm);

@@ -57,11 +57,12 @@ class Header extends Component {
 	}
 
 	handleDrawerToggle = () => {
-		this.setState((prevState) => {
-			
+		this.setState(prevState => {
+			return {
+				setOpen: !prevState.setOpen
+			};
 		});
 	};
-
 
 	render() {
 		return (
@@ -108,7 +109,7 @@ class Header extends Component {
 					classes={{}}
 				>
 					<div>
-						<IconButton onClick={this.handleDrawerClose}>
+						<IconButton onClick={this.handleDrawerToggle}>
 							<ChevronLeftIcon />
 						</IconButton>
 					</div>

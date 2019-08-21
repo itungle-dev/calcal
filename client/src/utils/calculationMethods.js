@@ -40,7 +40,7 @@ export const macronutrientInGrams = (
 	const carbsGrams = Math.round(((percentages[1] / 100) * totalCalories) / 4);
 	const fatsGrams = Math.round(((percentages[2] / 100) * totalCalories) / 9);
 
-	return [proteinsGrams, carbsGrams, fatsGrams];
+	return { proteinsGrams, carbsGrams, fatsGrams };
 };
 
 export const macronutrientInCalories = (
@@ -51,7 +51,7 @@ export const macronutrientInCalories = (
 	const carbsCalories = Math.round((percentages[1] / 100) * totalCalories);
 	const fatsCalories = Math.round((percentages[2] / 100) * totalCalories);
 
-	return [proteinsCalories, carbsCalories, fatsCalories];
+	return { proteinsCalories, carbsCalories, fatsCalories };
 };
 
 export const convertWeightToPound = kilo => {
@@ -85,7 +85,7 @@ export const convertHeightMetricToImperial = (cm = 0) => {
 	const totalInches = Math.round(Number(cm) / INCH_IN_CM);
 	const feet = Math.floor(totalInches / 12);
 	const inches = Math.round(totalInches % 12);
-	return [feet, inches];
+	return { feet, inches };
 };
 
 export const updateFeetAndInches = (feet, inches) => {
@@ -99,5 +99,5 @@ export const updateFeetAndInches = (feet, inches) => {
 
 	let updatedFeet = floorFt + Math.floor(updatedInches / INCHES_TO_FEET);
 	updatedInches = Math.round(updatedInches % INCHES_TO_FEET);
-	return [updatedFeet, updatedInches];
+	return { updatedFeet, updatedInches };
 };

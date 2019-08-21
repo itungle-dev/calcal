@@ -7,10 +7,10 @@ import { Container } from "@material-ui/core";
 import Header from "./Header";
 
 import Calculation from "./calculation";
+import Profile from "./Profile";
 
 const ProgressTracker = () => <h2>ProgressTracker</h2>;
 const About = () => <h2>About</h2>;
-const Profile = () => <h2>Profile</h2>;
 
 class App extends Component {
 	componentDidMount() {

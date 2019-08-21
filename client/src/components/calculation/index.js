@@ -52,7 +52,7 @@ class Calculation extends Component {
 						tabUnit={this.state.tabUnit}
 					/>
 				</Grid>
-				{this.state.showResult && this.displayUserResult()}
+				{this.displayUserResult()}
 			</Grid>
 		);
 	}
