@@ -14,6 +14,10 @@ const userSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	unitPreference: {
+		type: Number,
+		default: 0
+	},
 	age: {
 		type: Number
 	},
@@ -21,32 +25,29 @@ const userSchema = new Schema({
 		type: String
 	},
 	weight: {
-		imperial: {},
-		metric: {}
+		pound: { type: Number },
+		kilo: { type: Number }
 	},
 	height: {
-		imperial: {},
-		metric: {}
+		feet: { type: Number },
+		inches: { type: Number },
+		cm: { type: Number }
 	},
 	goal: {
-		type: String
+		type: Number,
+		default: 0
 	},
 	goalPace: {
-		type: String
+		type: Number,
+		default: 0
 	},
 	activity: {
-		type: Number
+		type: Number,
+		default: 1.2
 	},
-	macrosRatio: {
-		proteins: {
-			type: Number
-		},
-		carbs: {
-			type: Number
-		},
-		fats: {
-			type: Number
-		}
+	macros: {
+		type: Number,
+		default: 0
 	}
 });
 

@@ -25,22 +25,26 @@ class Result extends Component {
 
 		const { proteinsRatio, carbsRatio, fatsRatio } = MACROS_RATIOS[macros];
 
-		const updatedHeightImperial = calcMethods.updateFeetAndInches(
-			heightFt,
-			heightIn
-		);
-		const updatedHeightFt = updatedHeightImperial.updatedFeet;
-		const updatedHeightIn = updatedHeightImperial.updatedInches;
+		const updatedHeightImperial =
+			tabUnit === 0
+				? calcMethods.updateFeetAndInches(heightFt, heightIn)
+				: calcMethods.convertHeightMetricToImperial(heightCm);
+
+		const updatedHeightFt = updatedHeightImperial.feet;
+		const updatedHeightIn = updatedHeightImperial.inches;
+		const heightInCm =
+			tabUnit === 0
+				? calcMethods.convertHeightToCm(updatedHeightFt, updatedHeightIn)
+				: Math.round(Number(heightCm));
 
 		const weightInKilo =
 			tabUnit === 0
 				? calcMethods.convertWeightToKilo(weight)
 				: Math.round(Number(weight));
-
-		const heightInCm =
+		const weightInPound =
 			tabUnit === 0
-				? calcMethods.convertHeightToCm(updatedHeightFt, updatedHeightIn)
-				: Math.round(Number(heightCm));
+				? Math.round(Number(weight))
+				: calcMethods.convertWeightToPound(weight);
 
 		const {
 			maintenanceDailyCalories,
@@ -212,20 +216,25 @@ class Result extends Component {
 						variant="outlined"
 						color="primary"
 						onClick={() => {
-							const userProfile = {
-								unit: tabUnit,
-								age,
-								gender,
-								weight,
+							const newUserInfo = {
+								unitPreference: tabUnit,
+								age: Number(age),
+								gender: gender,
+								weight: {
+									pound: weightInPound,
+									kilo: weightInKilo
+								},
+								height: {
+									feet: updatedHeightFt,
+									inches: updatedHeightIn,
+									cm: heightInCm
+								},
 								goal,
 								goalPace,
 								macros,
 								activity,
-								proteinsRatio,
-								carbsRatio,
-								fatsRatio
 							};
-							return this.props.saveUserInfo(userProfile);
+							return this.props.saveUserInfo(newUserInfo);
 						}}
 					>
 						Save

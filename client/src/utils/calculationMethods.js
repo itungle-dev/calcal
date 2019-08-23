@@ -97,7 +97,7 @@ export const updateFeetAndInches = (feet, inches) => {
 	const leftOverDecimalFt = feet - floorFt;
 	let updatedInches = leftOverDecimalFt * 12 + inches;
 
-	let updatedFeet = floorFt + Math.floor(updatedInches / INCHES_TO_FEET);
-	updatedInches = Math.round(updatedInches % INCHES_TO_FEET);
-	return { updatedFeet, updatedInches };
+	feet = floorFt + Math.floor(updatedInches / INCHES_TO_FEET);
+	inches = Math.round(updatedInches % INCHES_TO_FEET);
+	return { feet, inches };
 };
