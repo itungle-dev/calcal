@@ -1,8 +1,9 @@
 import React from "react";
-import { renderSelect } from "../renderInputs";
 import { Field } from "redux-form";
 import { MenuItem } from "@material-ui/core";
-import { GOAL_LABELS } from "../data/selectFieldData";
+import { GOAL_LABELS } from "../../../../data/selectFieldData";
+import RenderSelectField from "../../../renderFields/RenderSelectField";
+
 const Goal = ({ handleGoalChange }) => {
 	const goalOptions = GOAL_LABELS.map(({ label, value }, index) => {
 		return (
@@ -15,10 +16,12 @@ const Goal = ({ handleGoalChange }) => {
 	return (
 		<Field
 			name="goal"
-			component={renderSelect}
+			label="Goal"
+			component={RenderSelectField}
 			menuItems={goalOptions}
 			onChange={handleGoalChange}
 			variant="outlined"
+			margin="dense"
 		/>
 	);
 };

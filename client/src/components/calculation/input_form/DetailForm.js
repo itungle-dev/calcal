@@ -1,18 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm, change } from "redux-form";
-import { Paper, Grid, Box, Typography, Button } from "@material-ui/core";
-import FieldRow from "./FieldRow";
-import Age from "./FormRows/Age";
-import Gender from "./FormRows/Gender";
-import Weight from "./FormRows/Weight";
-import Height from "./FormRows/Height";
-import Goal from "./FormRows/Goal";
-import ActivityLevel from "./FormRows/ActivityLevel";
-import MacrosRatio from "./FormRows/MacrosRatio";
-import GoalPace from "./FormRows/GoalPace";
-import * as calcMethods from "../../utils/calculationMethods";
+import { Paper, Grid, Box, Button } from "@material-ui/core";
+import Age from "./field/Age";
+import Gender from "./field/Gender";
+import Weight from "./field/Weight";
+import Height from "./field/Height";
+import Goal from "./field/Goal";
+import ActivityLevel from "./field/ActivityLevel";
+import MacrosRatio from "./field/MacrosRatio";
+import GoalPace from "./field/GoalPace";
+import * as calcMethods from "../../../utils/calculationMethods";
 
+/**
+|--------------------------------------------------
+| Detail Form: display all the inputs using redux-form
+|--------------------------------------------------
+*/
 class DetailForm extends Component {
 	constructor(props) {
 		super(props);
@@ -70,34 +74,8 @@ class DetailForm extends Component {
 	};
 
 	renderForms = tabIndex => {
-		const gridContainerProps = {
-			container: true,
-
-			alignItems: "center",
-			spacing: 2
-		};
-
-		const gridItemLabelProps = {
-			item: true,
-			sm: 4
-		};
-
-		const gridItemFieldProps = {
-			item: true,
-			sm: 8
-		};
-
 		const { pristine, submitting, reset, handleSubmit } = this.props;
 
-		const labelsList = [
-			"Age",
-			"Gender",
-			"Weight",
-			"Height",
-			"Activity Level",
-			"Macros Ratio",
-			"Goal"
-		];
 		const validateAge = [isRequired, isNumber, isAgeInRange];
 		const validateWeight = [isRequired, isNumber];
 		const validateNum = [isNumber];
@@ -116,34 +94,30 @@ class DetailForm extends Component {
 			<Goal handleGoalChange={this.handleGoalChange} />
 		];
 		const fieldRows = fieldsList.map((field, index) => {
-			const labelTypograph = (
-				<Typography align="right">{labelsList[index]}</Typography>
-			);
 			return (
-				<FieldRow
-					key={index}
-					label={labelTypograph}
-					field={field}
-					containerProps={gridContainerProps}
-					itemLabelProps={gridItemLabelProps}
-					itemFieldProps={gridItemFieldProps}
-				/>
+				<Grid item key={index}>
+					{field}
+				</Grid>
 			);
 		});
 		return (
 			<Paper square>
 				<form onSubmit={handleSubmit}>
 					<Box p={2}>
-						{fieldRows}
-						{this.state.goal > 0 && (
-							<FieldRow
-								label={<Typography align="right">Goal Pace</Typography>}
-								field={<GoalPace unit={tabIndex} goal={this.state.goal} />}
-								containerProps={gridContainerProps}
-								itemLabelProps={gridItemLabelProps}
-								itemFieldProps={gridItemFieldProps}
-							/>
-						)}
+						<Grid
+							container
+							direction="column"
+							justify="center"
+							alignItems="stretch"
+							spacing={1}
+						>
+							{fieldRows}
+							<Grid item>
+								{this.state.goal !== 0 && (
+									<GoalPace unit={tabIndex} goal={this.state.goal} />
+								)}
+							</Grid>
+						</Grid>
 
 						<Grid
 							container

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { Grid } from "@material-ui/core";
-import UnitTabs from "./UnitTabs";
-import DetailForm from "./DetailForm";
-import Result from "./Result";
+import UnitTabs from "./input_form/UnitTabs";
+import DetailForm from "./input_form/DetailForm";
+import Result from "./result/Result";
 
 class Calculation extends Component {
 	constructor(props) {
@@ -30,7 +30,7 @@ class Calculation extends Component {
 
 	displayUserResult = () => {
 		return (
-			<Grid item sm={8} style={{ height: "100%" }}>
+			<Grid item xs={12} sm={12} md={8} style={{ height: "100%" }}>
 				<Result
 					tabUnit={this.state.tabUnit}
 					onSave={values => console.log("in side onSave", values)}
@@ -42,7 +42,7 @@ class Calculation extends Component {
 	render() {
 		return (
 			<Grid container spacing={3} justify="flex-start" alignItems="stretch">
-				<Grid item sm={4}>
+				<Grid item xs={12} sm={12} md={4}>
 					<UnitTabs
 						tabUnit={this.state.tabUnit}
 						handleTabChange={this.handleTabChange}

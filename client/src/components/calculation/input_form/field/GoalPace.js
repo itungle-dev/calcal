@@ -1,8 +1,8 @@
 import React from "react";
-import { renderSelect } from "../renderInputs";
 import { Field } from "redux-form";
 import { MenuItem } from "@material-ui/core";
-import { GOAL_PACE } from "../data/selectFieldData";
+import { GOAL_PACE } from "../../../../data/selectFieldData";
+import RenderSelectField from "../../../renderFields/RenderSelectField";
 
 const GoalPace = ({ unit, goal }) => {
 	const rateOptions = GOAL_PACE.map(
@@ -25,10 +25,12 @@ const GoalPace = ({ unit, goal }) => {
 	return (
 		<Field
 			name="goalPace"
-			component={renderSelect}
+			label="Goal Pace"
+			component={RenderSelectField}
 			menuItems={rateOptions}
 			variant="outlined"
 			unit={unit}
+			margin="dense"
 		/>
 	);
 };

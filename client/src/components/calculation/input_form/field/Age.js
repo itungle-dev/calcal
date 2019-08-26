@@ -1,15 +1,19 @@
 import React from "react";
 import { Field } from "redux-form";
-import { renderField } from "../renderInputs";
+import RenderTextField from "../../../renderFields/RenderTextField";
 
 const Age = props => {
 	return (
 		<Field
 			name="age"
-			component={renderField}
+			label="Age"
+			component={RenderTextField}
 			fullWidth
 			variant="outlined"
 			validate={props.validate}
+			InputLabelProps={{
+				shrink: true
+			}}
 		/>
 	);
 };

@@ -21,7 +21,7 @@ class App extends Component {
 		console.log("App props", this.props);
 		return (
 			<BrowserRouter>
-				<Container maxWidth="xl">
+				<Container maxWidth="lg">
 					<Header />
 					<Route exact={true} path="/" component={Calculation} />
 					<Route exact={true} path="/progress" component={ProgressTracker} />

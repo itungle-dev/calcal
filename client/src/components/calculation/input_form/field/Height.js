@@ -1,30 +1,34 @@
 import React, { Fragment } from "react";
-import { renderField } from "../renderInputs";
 import { Field } from "redux-form";
 import { Grid, InputAdornment } from "@material-ui/core";
+import RenderTextField from "../../../renderFields/RenderTextField";
 
 const Height = ({ unit, validateBigUnit, validateSmallUnit }) => {
 	let height;
 	if (unit === 0) {
 		height = (
-			<Fragment>
-				<Grid item xs={6}>
+			<Grid container spacing={2}>
+				<Grid item xs={6} md={6} lg={6} xl={6}>
 					<Field
-						style={{ marginRight: 2.5 }}
 						name="heightFt"
-						component={renderField}
+						label="Height"
+						component={RenderTextField}
 						variant="outlined"
 						validate={validateBigUnit}
+						fullWidth
+						InputLabelProps={{
+							shrink: true
+						}}
 						InputProps={{
 							endAdornment: <InputAdornment position="end">ft</InputAdornment>
 						}}
 					/>
 				</Grid>
-				<Grid item xs={6}>
+				<Grid item xs={6} md={6} lg={6} xl={6}>
 					<Field
-						style={{ marginLeft: 2.5 }}
+						fullWidth
 						name="heightIn"
-						component={renderField}
+						component={RenderTextField}
 						variant="outlined"
 						validate={validateSmallUnit}
 						InputProps={{
@@ -32,17 +36,21 @@ const Height = ({ unit, validateBigUnit, validateSmallUnit }) => {
 						}}
 					/>
 				</Grid>
-			</Fragment>
+			</Grid>
 		);
 	} else {
 		height = (
 			<Fragment>
 				<Field
 					name="heightCm"
-					component={renderField}
+					label="Height"
+					component={RenderTextField}
 					fullWidth
 					variant="outlined"
 					validate={validateBigUnit}
+					InputLabelProps={{
+						shrink: true
+					}}
 					InputProps={{
 						endAdornment: <InputAdornment position="end">cm</InputAdornment>
 					}}

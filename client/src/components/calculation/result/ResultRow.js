@@ -2,7 +2,7 @@ import React from "react";
 import ResultCaloriesBox from "./ResultCaloriesBox";
 import ResultChart from "./ResultChart";
 import { Grid, Card, CardContent, Box, Typography } from "@material-ui/core";
-import { GOAL_PACE } from "./data/selectFieldData";
+import { GOAL_PACE } from "../../../data/selectFieldData";
 
 const ResultRow = ({
 	label,

@@ -1,13 +1,13 @@
 import React from "react";
 import { Field } from "redux-form";
 import { FormControlLabel, Radio } from "@material-ui/core";
-import { renderRadio } from "../renderInputs";
+import RenderRadio from "../../../renderFields/RenderRadioField";
 
 const Gender = props => {
 	return (
 		<Field
 			name="gender"
-			component={renderRadio}
+			component={RenderRadio}
 			label="Gender"
 			showLabel={false}
 		>

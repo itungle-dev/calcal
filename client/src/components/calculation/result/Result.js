@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Typography, Paper, Box } from "@material-ui/core";
-import * as actions from "../../actions";
-import * as calcMethods from "../../utils/calculationMethods";
-import { MACROS_RATIOS, GOAL_LABELS, GOAL_PACE } from "./data/selectFieldData";
+import * as actions from "../../../actions";
+import * as calcMethods from "../../../utils/calculationMethods";
+import { MACROS_RATIOS, GOAL_LABELS, GOAL_PACE } from "../../../data/selectFieldData";
 
 import ResultRow from "./ResultRow";
 
@@ -232,7 +232,7 @@ class Result extends Component {
 								goal,
 								goalPace,
 								macros,
-								activity,
+								activity
 							};
 							return this.props.saveUserInfo(newUserInfo);
 						}}

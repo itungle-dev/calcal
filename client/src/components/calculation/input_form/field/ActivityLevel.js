@@ -1,7 +1,7 @@
 import React from "react";
-import { renderSelect } from "../renderInputs";
 import { Field } from "redux-form";
 import { MenuItem } from "@material-ui/core";
+import RenderSelectField from "../../../renderFields/RenderSelectField";
 
 const ActivityLevel = () => {
 	const activities = [
@@ -23,9 +23,11 @@ const ActivityLevel = () => {
 	return (
 		<Field
 			name="activity"
-			component={renderSelect}
+			label="Activity Level"
+			component={RenderSelectField}
 			menuItems={activityOptions}
 			variant="outlined"
+			margin="dense"
 		/>
 	);
 };
