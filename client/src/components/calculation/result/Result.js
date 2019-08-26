@@ -3,11 +3,19 @@ import { connect } from "react-redux";
 import { Button, Typography, Paper, Box } from "@material-ui/core";
 import * as actions from "../../../actions";
 import * as calcMethods from "../../../utils/calculationMethods";
-import { MACROS_RATIOS, GOAL_LABELS, GOAL_PACE } from "../../../data/selectFieldData";
+import {
+	MACROS_RATIOS,
+	GOAL_LABELS,
+	GOAL_PACE
+} from "../../../data/selectFieldData";
 
 import ResultRow from "./ResultRow";
 
 class Result extends Component {
+	handleSave = newUserInfo => {
+		return this.props.saveUserInfo(newUserInfo);
+	};
+
 	render() {
 		const {
 			age,
@@ -171,6 +179,25 @@ class Result extends Component {
 			}
 		];
 
+		const newUserInfo = {
+			unitPreference: tabUnit,
+			age: Number(age),
+			gender: gender,
+			weight: {
+				pound: weightInPound,
+				kilo: weightInKilo
+			},
+			height: {
+				feet: updatedHeightFt,
+				inches: updatedHeightIn,
+				cm: heightInCm
+			},
+			goal,
+			goalPace,
+			macros,
+			activity
+		};
+
 		const heightInput =
 			tabUnit === 1
 				? `${heightInCm} cm`
@@ -180,7 +207,7 @@ class Result extends Component {
 					: `${heightFt} ft`
 				: `${heightIn} in`;
 		const weightInput = tabUnit === 0 ? `${weight} lbs` : `${weightInKilo} kgs`;
-
+		console.log("this.props.auth", this.props.auth);
 		return (
 			<Paper square>
 				<Box p={2}>
@@ -215,29 +242,12 @@ class Result extends Component {
 						label="button"
 						variant="outlined"
 						color="primary"
+						disabled={!this.props.auth}
 						onClick={() => {
-							const newUserInfo = {
-								unitPreference: tabUnit,
-								age: Number(age),
-								gender: gender,
-								weight: {
-									pound: weightInPound,
-									kilo: weightInKilo
-								},
-								height: {
-									feet: updatedHeightFt,
-									inches: updatedHeightIn,
-									cm: heightInCm
-								},
-								goal,
-								goalPace,
-								macros,
-								activity
-							};
-							return this.props.saveUserInfo(newUserInfo);
+							this.handleSave(newUserInfo);
 						}}
 					>
-						Save
+						{!this.props.auth ? "Login to Save" : "Save"}
 					</Button>
 				</Box>
 			</Paper>
@@ -247,7 +257,8 @@ class Result extends Component {
 
 function mapStateToProps(state, ownProps) {
 	return {
-		formValues: state.form.calForm.values
+		formValues: state.form.calForm.values,
+		auth: state.auth
 	};
 }
 

@@ -23,6 +23,7 @@ class DetailForm extends Component {
 		this.state = {
 			goal: 0
 		};
+
 		this.props.initialize({
 			activity: 1.2,
 			goal: 0,
@@ -31,6 +32,10 @@ class DetailForm extends Component {
 			gender: "female"
 		});
 	}
+
+	componentDidMount = () => {
+		console.log("this.props did mount", this.props);
+	};
 
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.tabUnit !== this.props.tabUnit) {
@@ -221,7 +226,8 @@ const validate = (values, props) => {
 };
 function mapStateToProps(state) {
 	return {
-		formValues: state.form.calForm.values
+		formValues: state.form.calForm.values,
+		auth: state.auth
 	};
 }
 const mapDispatchToProps = {

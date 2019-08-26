@@ -30,7 +30,7 @@ class Calculation extends Component {
 
 	displayUserResult = () => {
 		return (
-			<Grid item xs={12} sm={12} md={8} style={{ height: "100%" }}>
+			<Grid item xs={12} sm={7} md={8} style={{ height: "100%" }}>
 				<Result
 					tabUnit={this.state.tabUnit}
 					onSave={values => console.log("in side onSave", values)}
@@ -42,7 +42,7 @@ class Calculation extends Component {
 	render() {
 		return (
 			<Grid container spacing={3} justify="flex-start" alignItems="stretch">
-				<Grid item xs={12} sm={12} md={4}>
+				<Grid item xs={12} sm={5} md={4}>
 					<UnitTabs
 						tabUnit={this.state.tabUnit}
 						handleTabChange={this.handleTabChange}
