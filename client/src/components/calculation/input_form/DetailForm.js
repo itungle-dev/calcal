@@ -33,10 +33,6 @@ class DetailForm extends Component {
 		});
 	}
 
-	componentDidMount = () => {
-		console.log("this.props did mount", this.props);
-	};
-
 	componentDidUpdate = (prevProps, prevState) => {
 		if (prevProps.tabUnit !== this.props.tabUnit) {
 			const { change, tabUnit } = this.props;

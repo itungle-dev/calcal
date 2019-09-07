@@ -6,7 +6,7 @@ import { Container } from "@material-ui/core";
 
 import Header from "./Header";
 
-import Calculation from "./calculation";
+import Calculation from "./calculation/Calculation";
 import Profile from "./Profile";
 
 const ProgressTracker = () => <h2>ProgressTracker</h2>;
