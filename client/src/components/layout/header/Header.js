@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
 import {
@@ -6,8 +6,7 @@ import {
 	Toolbar,
 	Hidden,
 	IconButton,
-	Typography,
-	Icon
+	Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import MenuIcon from "@material-ui/icons/Menu";

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { makeStyles, Drawer, Divider } from "@material-ui/core";
 import SideBarNav from "./SideBarNav";
+import ProfileAvatar from "./ProfileAvatar";
 
 const useStyles = makeStyles(theme => ({
 	drawer: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 const SideBar = props => {
 	const { open, variant, onClose, className, auth, dispatch, ...rest } = props;
+	const { name, pictureURL } = auth;
 	const classes = useStyles();
 	const dynamicNavPage = () => {
 		switch (auth) {
@@ -78,6 +80,7 @@ const SideBar = props => {
 			variant={variant}
 		>
 			<div {...rest} className={clsx(classes.root, className)}>
+				<ProfileAvatar displayName={name} pictureURL={pictureURL} />
 				<Divider className={classes.divider} />
 				<SideBarNav className={classes.nav} navPages={navPages} />
 			</div>

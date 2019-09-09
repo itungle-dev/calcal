@@ -33,7 +33,8 @@ passport.use(
 				// dont have a record with profile id
 				const user = await new User({
 					googleId: profile.id,
-					name: profile.displayName
+					name: profile.displayName,
+					pictureURL: profile._json.picture
 				}).save();
 				done(null, user);
 			}
