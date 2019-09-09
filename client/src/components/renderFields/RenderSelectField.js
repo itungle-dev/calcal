@@ -46,7 +46,7 @@ function RenderSelectField({
 			style={{ width: "100%" }}
 			margin={margin}
 		>
-			<InputLabel ref={inputLabel} htmlFor={`${variant}-${name}-input`}>
+			<InputLabel shrink ref={inputLabel} htmlFor={`${variant}-${name}-input`}>
 				{label}
 			</InputLabel>
 			<Select input={selectInput} {...custom}>

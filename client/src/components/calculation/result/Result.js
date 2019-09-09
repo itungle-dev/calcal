@@ -207,7 +207,38 @@ class Result extends Component {
 					: `${heightFt} ft`
 				: `${heightIn} in`;
 		const weightInput = tabUnit === 0 ? `${weight} lbs` : `${weightInKilo} kgs`;
-		console.log("this.props.auth", this.props.auth);
+
+		const renderButton = () => {
+			switch (this.props.auth) {
+				case null:
+					return;
+				case false:
+					return (
+						<Button
+							label="button"
+							variant="outlined"
+							color="primary"
+							disabled={!this.props.auth}
+						>
+							Login to Save
+						</Button>
+					);
+				default:
+					return (
+						<Button
+							label="button"
+							variant="outlined"
+							color="primary"
+							onClick={() => {
+								this.handleSave(newUserInfo);
+							}}
+						>
+							Save
+						</Button>
+					);
+			}
+		};
+
 		return (
 			<Paper square>
 				<Box p={2}>
@@ -238,17 +269,7 @@ class Result extends Component {
 				)}
 
 				<Box align="center" p={2}>
-					<Button
-						label="button"
-						variant="outlined"
-						color="primary"
-						disabled={!this.props.auth}
-						onClick={() => {
-							this.handleSave(newUserInfo);
-						}}
-					>
-						{!this.props.auth ? "Login to Save" : "Save"}
-					</Button>
+					{renderButton()}
 				</Box>
 			</Paper>
 		);

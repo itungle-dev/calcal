@@ -7,27 +7,17 @@ import { Container } from "@material-ui/core";
 import Header from "./Header";
 
 import Calculation from "./calculation/Calculation";
-import Profile from "./Profile";
-
-const ProgressTracker = () => <h2>ProgressTracker</h2>;
-const About = () => <h2>About</h2>;
-
+// import Profile from "./profile/Profile";
+import Routes from "./Routes";
 class App extends Component {
 	componentDidMount() {
 		this.props.fetchUser();
 	}
 
 	render() {
-		console.log("App props", this.props);
 		return (
 			<BrowserRouter>
-				<Container maxWidth="lg">
-					<Header />
-					<Route exact={true} path="/" component={Calculation} />
-					<Route exact={true} path="/progress" component={ProgressTracker} />
-					<Route exact={true} path="/about" component={About} />
-					<Route exact={true} path="/profile" component={Profile} />
-				</Container>
+				<Routes />
 			</BrowserRouter>
 		);
 	}
