@@ -27,13 +27,36 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SideBar = props => {
-	const { open, variant, onClose, className, auth, dispatch, ...rest } = props;
-	const { name, pictureURL } = auth;
+	const {
+		open,
+		variant,
+		onClose,
+		className,
+		auth,
+		auth: { userInfo, isLoading },
+		dispatch,
+		...rest
+	} = props;
+	const renderProfile = () => {
+		switch (userInfo) {
+			case null:
+			case false:
+				return;
+			default:
+				return (
+					<ProfileAvatar
+						displayName={userInfo.name}
+						pictureURL={userInfo.pictureURL}
+					/>
+				);
+		}
+	};
+
+	// const { name, pictureURL } = auth;
 	const classes = useStyles();
 	const dynamicNavPage = () => {
-		switch (auth) {
+		switch (userInfo) {
 			case null:
-				return [];
 			case false:
 				return [
 					{
@@ -61,15 +84,17 @@ const SideBar = props => {
 		}
 	};
 
-	const navPages = [
-		{
-			title: "Calculation",
-			href: "/calculation",
-			icon: "none",
-			useAnchor: false
-		},
-		...dynamicNavPage()
-	];
+	const navPages = isLoading
+		? []
+		: [
+				{
+					title: "Calculation",
+					href: "/calculation",
+					icon: "none",
+					useAnchor: false
+				},
+				...dynamicNavPage()
+		  ];
 
 	return (
 		<Drawer
@@ -80,7 +105,7 @@ const SideBar = props => {
 			variant={variant}
 		>
 			<div {...rest} className={clsx(classes.root, className)}>
-				<ProfileAvatar displayName={name} pictureURL={pictureURL} />
+				{renderProfile()}
 				<Divider className={classes.divider} />
 				<SideBarNav className={classes.nav} navPages={navPages} />
 			</div>

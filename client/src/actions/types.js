@@ -1,2 +1,2 @@
-export const FETCH_USER = "FETCH_USER";
-export const SAVE_USER_INFO = "SAVE_USER_INFO";
+export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
+export const FETCH_USER_FAIL = "FETCH_USER_FAIL";

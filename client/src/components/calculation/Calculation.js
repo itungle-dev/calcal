@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import { Grid } from "@material-ui/core";
+import { Grid, CircularProgress } from "@material-ui/core";
 import UnitTabs from "./input_form/UnitTabs";
 import DetailForm from "./input_form/DetailForm";
 import Result from "./result/Result";
+import UserForm from "./UserForm";
 import { withStyles } from "@material-ui/styles";
 
 const useStyles = theme => ({
@@ -35,26 +36,27 @@ class Calculation extends Component {
 	displayUserResult = () => {
 		return (
 			<Grid item xs={12} sm={7} md={8} style={{ height: "100%" }}>
-				<Result
-					tabUnit={this.state.tabUnit}
-					onSave={values => console.log("in side onSave", values)}
-				/>
+				<Result tabUnit={this.state.tabUnit} />
 			</Grid>
 		);
 	};
 
 	render() {
+		const {
+			auth: { isLoading }
+		} = this.props;
+		if (isLoading) {
+			return null;
+		}
 		return (
 			<div>
 				<Grid container spacing={3} justify="flex-start" alignItems="stretch">
 					<Grid item xs={12} sm={5} md={4}>
-						<UnitTabs
+						<UserForm
 							tabUnit={this.state.tabUnit}
 							handleTabChange={this.handleTabChange}
-						/>
-						<DetailForm
-							onSubmit={this.handleResult}
-							tabUnit={this.state.tabUnit}
+							handleResult={this.handleResult}
+							calculationOrProfile="calculation"
 						/>
 					</Grid>
 					{this.state.showResult && this.displayUserResult()}
@@ -64,7 +66,9 @@ class Calculation extends Component {
 	}
 }
 function mapStateToProps(state, ownProps) {
-	return {};
+	return {
+		auth: state.auth
+	};
 }
 Calculation = withStyles(useStyles)(Calculation);
 Calculation = connect(mapStateToProps)(Calculation);

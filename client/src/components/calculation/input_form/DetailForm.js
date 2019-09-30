@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm, change } from "redux-form";
-import { Paper, Grid, Box, Button } from "@material-ui/core";
+import { Paper, Grid, Box, Button, withStyles } from "@material-ui/core";
 import Age from "./field/Age";
 import Gender from "./field/Gender";
 import Weight from "./field/Weight";
@@ -17,6 +17,9 @@ import * as calcMethods from "../../../utils/calculationMethods";
 | Detail Form: display all the inputs using redux-form
 |--------------------------------------------------
 */
+const useStyles = theme => ({
+	fields: { margin: "1em" }
+});
 class DetailForm extends Component {
 	constructor(props) {
 		super(props);
@@ -31,6 +34,36 @@ class DetailForm extends Component {
 			goalPace: 0,
 			gender: "female"
 		});
+	}
+
+	componentDidMount() {
+		const { userInfo } = this.props.auth;
+
+		console.log("component did mount userInfo", userInfo);
+
+		if (userInfo) {
+			const initialValues = {
+				age: userInfo.age,
+				gender: userInfo.gender,
+				goal: userInfo.goal,
+				activity: userInfo.activity,
+				macros: userInfo.macros,
+				goalPace: userInfo.goalPace,
+				weight: userInfo.weight ? userInfo.weight.pound : null,
+				heightFt: userInfo.height ? userInfo.height.feet : null,
+				heightIn: userInfo.height ? userInfo.height.inches : null
+			};
+
+			this.props.initialize(initialValues);
+		} else {
+			this.props.initialize({
+				activity: 1.2,
+				goal: 0,
+				macros: 0,
+				goalPace: 0,
+				gender: "female"
+			});
+		}
 	}
 
 	componentDidUpdate = (prevProps, prevState) => {
@@ -74,8 +107,25 @@ class DetailForm extends Component {
 		});
 	};
 
-	renderForms = tabIndex => {
-		const { pristine, submitting, reset, handleSubmit } = this.props;
+	onClear = () => {
+		const { auth, reset, tabUnit, change } = this.props;
+		const { userInfo } = auth;
+		reset();
+		if (userInfo && tabUnit === 1) {
+			change("calForm", "weight", userInfo.weight.kilo);
+			change("calForm", "heightCm", userInfo.height.cm);
+		}
+	};
+
+	render() {
+		const {
+			pristine,
+			submitting,
+			handleSubmit,
+			classes,
+			tabUnit,
+			calculationOrProfile
+		} = this.props;
 
 		const validateAge = [isRequired, isNumber, isAgeInRange];
 		const validateWeight = [isRequired, isNumber];
@@ -84,9 +134,9 @@ class DetailForm extends Component {
 		const fieldsList = [
 			<Age validate={validateAge} />,
 			<Gender />,
-			<Weight unit={tabIndex} validate={validateWeight} />,
+			<Weight unit={tabUnit} validate={validateWeight} />,
 			<Height
-				unit={tabIndex}
+				unit={tabUnit}
 				validateBigUnit={validateNum}
 				validateSmallUnit={validateNum}
 			/>,
@@ -96,29 +146,24 @@ class DetailForm extends Component {
 		];
 		const fieldRows = fieldsList.map((field, index) => {
 			return (
-				<Grid item key={index}>
+				<div key={index} className={classes.fields}>
 					{field}
-				</Grid>
+				</div>
 			);
 		});
+
+		if (calculationOrProfile === "calculation") {
+		} else {
+		}
+
 		return (
 			<Paper square>
 				<form onSubmit={handleSubmit}>
 					<Box p={2}>
-						<Grid
-							container
-							direction="column"
-							justify="center"
-							alignItems="stretch"
-							spacing={1}
-						>
-							{fieldRows}
-							<Grid item>
-								{this.state.goal !== 0 && (
-									<GoalPace unit={tabIndex} goal={this.state.goal} />
-								)}
-							</Grid>
-						</Grid>
+						{fieldRows}
+						{this.state.goal !== 0 && (
+							<GoalPace unit={tabUnit} goal={this.state.goal} />
+						)}
 
 						<Grid
 							container
@@ -132,7 +177,7 @@ class DetailForm extends Component {
 									variant="outlined"
 									color="secondary"
 									disabled={pristine || submitting}
-									onClick={reset}
+									onClick={this.onClear}
 								>
 									Clear
 								</Button>
@@ -147,11 +192,6 @@ class DetailForm extends Component {
 				</form>
 			</Paper>
 		);
-	};
-
-	render() {
-		const { tabUnit } = this.props;
-		return <div>{this.renderForms(tabUnit)}</div>;
 	}
 }
 const isRequired = value => {
@@ -229,6 +269,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
 	change
 };
+DetailForm = withStyles(useStyles)(DetailForm);
 DetailForm = connect(
 	mapStateToProps,
 	mapDispatchToProps
